@@ -101,17 +101,19 @@ user_proxy_agent.register_function(
 
 def get_weather_forcast(user_input: str) -> dict:
     """
+    This function is called by the weather service.
 
     Arguments:
-        user_input -- _description_
+        user_input -- The user input
 
     Returns:
-        _description_
+        LLM generated response
     """
     response = user_proxy_agent.initiate_chat(
         weather_agent,
-        message=f"Given user input: '{user_input}', extract the ZIP code using `extract_zip_code`,"
-        " then fetch weather data using `fetch_weather_data`. Once you get the response return the response to user.",
+        message=f"Given user input: '{user_input}', extract the ZIP code using `extract_zip_code`, "
+        "then fetch weather data using `fetch_weather_data`. "
+        "Once you get the response return the response to user.",
     )
 
     return response.chat_history[-1]["content"].replace("TERMINATE.", "").strip()
