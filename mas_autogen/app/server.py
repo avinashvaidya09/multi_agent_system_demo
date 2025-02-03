@@ -8,7 +8,7 @@ them to appropriate agents.
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from mas_autogen.app.utils.config import load_environment_variables
-from mas_autogen.app.services.weather_service import router as weather_router
+from mas_autogen.app.services.agent_service import router as chat
 
 # Load environment variables
 load_environment_variables()
@@ -28,7 +28,7 @@ async def health_check():
         content={"message": "Hello Again! Your Multi Agent System is up and running"}
     )
 
-app.include_router(weather_router)
+app.include_router(chat)
 
 if __name__ == "__main__":
     import uvicorn

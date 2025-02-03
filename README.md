@@ -38,7 +38,23 @@ python server.py
 | Method | Endpoint         | Description              |
 |--------|------------------|--------------------------|
 | `GET`  | `/health-check`  | Health check for the API |
-| `GET`  | `/weather`       | Get weather data API     |
+| `GET`  | `/chat   `       | Get response from agents     |
+
+## Summary of OOP Features Used
+# Multi-Agent System - Overview
+
+This project implements a multi-agent system using AutoGen, following Object-Oriented Programming (OOP) principles to make the system scalable and maintainable.
+
+## Object-Oriented Features Used
+
+| OOP Concept       | How It’s Used |
+|-------------------|---------------|
+| **Abstraction**   | `AgentFramework` defines a structure but hides implementation details using `@abstractmethod`. |
+| **Inheritance**   | `WeatherAgent` extends `AgentFramework`, inheriting its common logic like `start_chat()`. |
+| **Encapsulation** | Each agent’s internal behavior is hidden. |
+| **Polymorphism**  | `start_chat()` is generic and works with different agents that implement `create_ai_agents()`. |
+
+
 ## Why use FastAPI
 
 | Feature                    | FastAPI                       | Flask                  |
