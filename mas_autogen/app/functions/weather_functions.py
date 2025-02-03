@@ -8,14 +8,14 @@ from mas_autogen.app.utils.config import WEATHER_API_URL, WEATHER_API_KEY, OPENA
 
 
 def extract_zip_code_using_llm(user_input: str) -> str:
-    """_summary_
+    """This function uses llms to extract zip code.
 
     Arguments:
-        user_input -- _description_
+        user_input -- The user input.
 
     Returns:
-        _description_
-    """    
+        The zip code.
+    """
     openai_client = openai.OpenAI(api_key=OPENAI_API_KEY)
 
     response = openai_client.chat.completions.create(
@@ -42,13 +42,13 @@ def extract_zip_code_using_llm(user_input: str) -> str:
 
 
 def get_weather_data(zip_code: str) -> dict:
-    """_summary_
+    """This function calls weather api to get the data.
 
     Arguments:
-        zip_code -- _description_
+        zip_code -- The zip code.
 
     Returns:
-        _description_
+        The location, temperature and condition.
     """
     if not WEATHER_API_KEY:
         logger.error("Weather API key is missing")

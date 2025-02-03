@@ -1,6 +1,4 @@
-"""_summary_
-Returns:
-    _description_
+"""This module is for weather agent.
 """
 
 import autogen
@@ -66,7 +64,7 @@ class WeatherAgent(AgentFramework):
 
         user_proxy_agent = autogen.UserProxyAgent(
             name="user_proxy",
-            human_input_mode="NEVER",  # Enables the LLM to ask the user for missing information
+            human_input_mode="NEVER",  # Ask user for missing information
             is_termination_msg=lambda x: isinstance(x, dict)
             and x.get("content")
             and "TERMINATE" in x["content"].strip(),

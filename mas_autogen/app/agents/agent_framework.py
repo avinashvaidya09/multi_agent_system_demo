@@ -1,13 +1,13 @@
-"""_summary_"""
+"""This module is agent framework parent class."""
 
 from abc import ABC, abstractmethod
 
 
 class AgentFramework(ABC):
-    """_summary_
+    """Agent Framework class.
 
     Arguments:
-        ABC -- _description_
+        ABC -- The Abstract Base Class.
     """
 
     def __init__(self, agent_name: str = None):
@@ -15,23 +15,18 @@ class AgentFramework(ABC):
 
     @abstractmethod
     def create_ai_agents(self):
-        """_summary_
-
-        Arguments:
-            message -- _description_
-        """
-        pass
+        """This is an abstract method."""
 
     def start_chat(self, sender, receiver, message):
-        """_summary_
+        """This function initiates the chat.
 
         Arguments:
-            sender -- _description_
-            receiver -- _description_
-            message -- _description_
+            sender -- The sender agent.
+            receiver -- The receiver agent.
+            message -- The user message.
 
         Returns:
-            _description_
+            The final answer or error.
         """
         response = sender.initiate_chat(
             receiver,
