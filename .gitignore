@@ -18,3 +18,6 @@ MANIFEST
 */.env
 
 .DS_Store
+
+# autogen's cache
+**/app/.cache/

@@ -47,8 +47,9 @@ weather_agent = autogen.AssistantAgent(
     name="weather_agent",
     system_message=(
         "You are a weather assistant. Your job is to extract the ZIP code from the user's input. "
-        " and call weather data retreival. Once the weather data is retrieved, return the response and reply 'TERMINATE'."
-        " You must explicitly state 'TERMINATE' at the end of your response. "
+        "and call weather data retreival. Once the weather data is retrieved, "
+        "return the response and reply 'TERMINATE'."
+        "You must explicitly state 'TERMINATE' at the end of your response. "
     ),
     llm_config=llm_config,
 )
@@ -57,13 +58,13 @@ weather_agent = autogen.AssistantAgent(
 user_proxy_agent = autogen.UserProxyAgent(
     name="user_proxy",
     human_input_mode="NEVER",  # Enables the LLM to ask the user for missing information
-    is_termination_msg=lambda x: x.get("content", "") and x.get("content", "").rstrip().endswith("TERMINATE"),
+    is_termination_msg=lambda x: isinstance(x, dict)
+    and x.get("content")
+    and "TERMINATE" in x["content"].strip(),
     code_execution_config={
         "use_docker": False,
     },
 )
-
-
 
 
 def extract_zip_code(user_input: str) -> str:
@@ -99,7 +100,7 @@ user_proxy_agent.register_function(
 
 
 def get_weather_forcast(user_input: str) -> dict:
-    """_summary_
+    """
 
     Arguments:
         user_input -- _description_
@@ -110,7 +111,7 @@ def get_weather_forcast(user_input: str) -> dict:
     response = user_proxy_agent.initiate_chat(
         weather_agent,
         message=f"Given user input: '{user_input}', extract the ZIP code using `extract_zip_code`,"
-        " then fetch weather data using `fetch_weather_data`.",
+        " then fetch weather data using `fetch_weather_data`. Once you get the response return the response to user.",
     )
 
-    return response.chat_history[-1]["content"].replace("TERMINATE", "").strip()
+    return response.chat_history[-1]["content"].replace("TERMINATE.", "").strip()
