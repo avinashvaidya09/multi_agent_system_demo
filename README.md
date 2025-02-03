@@ -9,7 +9,7 @@ multi_agent_system_demo/
 │── mas_autogen/
 |   |__ app                 
 |   |   │── agents/                 
-|   |   │── tools/                  
+|   |   │── functions/                  
 |   |   │── services/               
 |   |   │── utils/                  
 |   │── server.py                   
