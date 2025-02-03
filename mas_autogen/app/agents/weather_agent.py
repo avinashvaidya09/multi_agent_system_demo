@@ -2,7 +2,7 @@
 """
 
 import autogen
-from mas_autogen.app.agents.agent_framework import AgentFramework
+from mas_autogen.app.agents.super_agent import SuperAgent
 from mas_autogen.app.utils.config import OPENAI_API_KEY
 from mas_autogen.app.functions.weather_functions import get_weather_data, extract_zip_code_using_llm
 
@@ -42,11 +42,11 @@ llm_config = {
     ],
     "timeout": 120,
 }
-class WeatherAgent(AgentFramework):
-    """_summary_
+class WeatherAgent(SuperAgent):
+    """This class implements create_ai_agents method.
 
     Arguments:
-        AgentFramework -- _description_
+        SuperAgent -- The agent framework parent class.
     """
 
     def create_ai_agents(self):

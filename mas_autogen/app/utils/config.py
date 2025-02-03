@@ -1,6 +1,4 @@
 """
-config.py
-
 This module loads the environment variables.
 """
 
@@ -9,7 +7,7 @@ from dotenv import load_dotenv
 
 
 def load_environment_variables():
-    """Loads env variables from .env file"""
+    """Loads enviroment variables from .env"""
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     env_path = os.path.join(base_dir, "..", ".env")
     load_dotenv(env_path)

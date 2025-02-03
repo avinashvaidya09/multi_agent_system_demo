@@ -3,7 +3,7 @@
 from abc import ABC, abstractmethod
 
 
-class AgentFramework(ABC):
+class SuperAgent(ABC):
     """Agent Framework class.
 
     Arguments:
