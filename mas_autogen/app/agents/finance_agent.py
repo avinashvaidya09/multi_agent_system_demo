@@ -131,9 +131,10 @@ class FinanceAgent(SuperAgent):
 
                 If the user says, "Thanks" or "Done" or "Bye", respond professionally.
 
-                If current task is complete, you will return the response and reply 'TERMINATE'.
+                Once the data is retrieved and If current task is complete, 
+                you will return the response and reply 'TERMINATE.'.
 
-                You must explicitly state 'TERMINATE' at the end of your response. 
+                You must explicitly state 'TERMINATE.' at the end of your response. 
                 
                 """
             ),
