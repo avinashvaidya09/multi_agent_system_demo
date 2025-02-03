@@ -1,0 +1,19 @@
+ID: multi_agent_system_demo
+_schema-version: 3.2.0
+version: 1.0.0
+
+modules:
+  - name: multi_agent_system_demo
+    type: python
+    path: /
+    parameters:
+      health-check-type: process
+      memory: 512M
+      disk-quota: 512M
+    build-parameters:
+      buildpack: python_buildpack
+      command: python mas_autogen/app/server.py
+    properties:
+      WEATHER_API_URL: https://api.weatherapi.com/v1/current.json
+      OPENAI_API_KEY: <Your OPENAI_API_KEY>
+      WEATHER_API_KEY: <Your WEATHER_API_KEY>
