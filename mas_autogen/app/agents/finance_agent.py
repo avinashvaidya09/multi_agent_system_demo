@@ -3,7 +3,7 @@
 
 import autogen
 from mas_autogen.app.agents.super_agent import SuperAgent
-from mas_autogen.app.utils.config import OPENAI_API_KEY
+from mas_autogen.app.utils.llm_config import llm_config_for_finance_agent
 from mas_autogen.app.functions.finance_functions import (
     extract_customer_id_using_llm,
     get_customer_balance,
@@ -11,86 +11,6 @@ from mas_autogen.app.functions.finance_functions import (
     get_disputed_items,
     get_invoices,
 )
-
-
-llm_config = {
-    "model": "gpt-4",
-    "api_key": OPENAI_API_KEY,
-    "functions": [
-        {
-            "name": "extract_customer_id",
-            "description": "Extract the customer id from the given text.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "user_input": {
-                        "type": "string",
-                        "description": "User-provided text from which to extract the customer id.",
-                    }
-                },
-                "required": ["user_input"],
-            },
-        },
-        {
-            "name": "fetch_customer_details",
-            "description": "Fetch customer details with the given customer id.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "customer_id": {
-                        "type": "string",
-                        "description": "The customer id to retrieve details",
-                    }
-                },
-                "required": ["customer_id"],
-            },
-        },
-        {
-            "name": "fetch_customer_balance",
-            "description": "Fetch customer balance with the given customer id.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "customer_id": {
-                        "type": "string",
-                        "description": "The customer id to retrieve customer balance",
-                    }
-                },
-                "required": ["customer_id"],
-            },
-        },
-        {
-            "name": "fetch_invoices",
-            "description": "Fetch customer invoices with the given customer id.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "customer_id": {
-                        "type": "string",
-                        "description": "The customer id to retrieve customer invoices",
-                    }
-                },
-                "required": ["customer_id"],
-            },
-        },
-        {
-            "name": "fetch_disputed_items",
-            "description": "Fetch customer disputed items with the given customer id.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "customer_id": {
-                        "type": "string",
-                        "description": "The customer id to retrieve customer disputed items",
-                    }
-                },
-                "required": ["customer_id"],
-            },
-        },
-    ],
-    "timeout": 120,
-}
-
 
 class FinanceAgent(SuperAgent):
     """This class implements create_ai_agents method.
@@ -138,7 +58,7 @@ class FinanceAgent(SuperAgent):
                 
                 """
             ),
-            llm_config=llm_config,
+            llm_config=llm_config_for_finance_agent,
         )
 
         user_proxy_agent = autogen.UserProxyAgent(

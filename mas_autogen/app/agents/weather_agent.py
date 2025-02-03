@@ -3,45 +3,10 @@
 
 import autogen
 from mas_autogen.app.agents.super_agent import SuperAgent
-from mas_autogen.app.utils.config import OPENAI_API_KEY
+from mas_autogen.app.utils.llm_config import llm_config_for_weather_agent
 from mas_autogen.app.functions.weather_functions import get_weather_data, extract_zip_code_using_llm
 
 
-llm_config = {
-    "model": "gpt-4",
-    "api_key": OPENAI_API_KEY,
-    "functions": [
-        {
-            "name": "extract_zip_code",
-            "description": "Extract the ZIP code from the given text.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "user_input": {
-                        "type": "string",
-                        "description": "User-provided text from which to extract the ZIP code.",
-                    }
-                },
-                "required": ["user_input"],
-            },
-        },
-        {
-            "name": "fetch_weather_data",
-            "description": "Fetch the current weather for a given ZIP code.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "zip_code": {
-                        "type": "string",
-                        "description": "The 5-digit ZIP code for which to retrieve weather.",
-                    }
-                },
-                "required": ["zip_code"],
-            },
-        },
-    ],
-    "timeout": 120,
-}
 class WeatherAgent(SuperAgent):
     """This class implements create_ai_agents method.
 
@@ -58,8 +23,10 @@ class WeatherAgent(SuperAgent):
                 "and call weather data retreival. Once the weather data is retrieved, "
                 "return the response and reply 'TERMINATE'."
                 "You must explicitly state 'TERMINATE' at the end of your response. "
+                "If the user says, 'Thanks' or 'Done' or 'Bye', respond professionally and "
+                " explicitly state 'TERMINATE.' at the end of your response."
             ),
-            llm_config=llm_config,
+            llm_config=llm_config_for_weather_agent,
         )
 
         user_proxy_agent = autogen.UserProxyAgent(
