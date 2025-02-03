@@ -40,18 +40,13 @@ python server.py
 | `GET`  | `/health-check`  | Health check for the API |
 | `GET`  | `/chat   `       | Get response from agents     |
 
-## Summary of OOP Features Used
-# Multi-Agent System - Overview
-
-This project implements a multi-agent system using AutoGen, following Object-Oriented Programming (OOP) principles to make the system scalable and maintainable.
-
-## Object-Oriented Features Used
+## OOPs conecpts leveraged
 
 | OOP Concept       | How It’s Used |
 |-------------------|---------------|
-| **Abstraction**   | `AgentFramework` defines a structure but hides implementation details using `@abstractmethod`. |
+| **Abstraction**   | `AgentFramework` defines a structure and hides implementation details using `@abstractmethod`. |
 | **Inheritance**   | `WeatherAgent` extends `AgentFramework`, inheriting its common logic like `start_chat()`. |
-| **Encapsulation** | Each agent’s internal behavior is hidden. |
+| **Encapsulation** | Each agent’s internal behavior is hidden from the caller. |
 | **Polymorphism**  | `start_chat()` is generic and works with different agents that implement `create_ai_agents()`. |
 
 
@@ -72,12 +67,4 @@ This project implements a multi-agent system using AutoGen, following Object-Ori
 - **Pylint** is configured for linting.
 - Run autoformatting manually using:
 
-
-## Next Steps
-- Implement AI-driven Weather & Finance agents.
-- Add structured logging using `loguru`.
-- Secure endpoints with authentication.
-
----
-🚀 **Project ready for further AI integration!**
 
