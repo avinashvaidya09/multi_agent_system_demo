@@ -1,0 +1,28 @@
+{
+    "customer_details": [
+        {
+            "customer_id": "CUST001",
+            "address": "123 Business St, New York, NY",
+            "account_manager": "Michael Johnson",
+            "account_status": "Active"
+        },
+        {
+            "customer_id": "CUST002",
+            "address": "456 Enterprise Ave, San Francisco, CA",
+            "account_manager": "Sarah Lee",
+            "account_status": "Inactive"
+        },
+        {
+            "customer_id": "CUST003",
+            "address": "123 CocaCola Ave, Atlanta, GA",
+            "account_manager": "Jack Lu",
+            "account_status": "Active"
+        },
+        {
+            "customer_id": "CUST004",
+            "address": "456 BOFA Ave, Charlotte, NC",
+            "account_manager": "Rick Case",
+            "account_status": "Inactive"
+        }
+    ]
+}

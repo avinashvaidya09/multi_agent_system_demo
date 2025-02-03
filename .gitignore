@@ -11,13 +11,10 @@ dist/
 downloads/
 MANIFEST
 
-# .vscode directory
-*.vscode
-
 # .env
 */.env
 
 .DS_Store
 
 # autogen's cache
-**/app/.cache/
+**/.cache/

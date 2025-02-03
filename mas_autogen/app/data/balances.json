@@ -1,0 +1,28 @@
+{
+    "balances": [
+        {
+            "customer_id": "CUST001",
+            "balance": 12500.75,
+            "currency": "USD",
+            "last_payment_date": "2025-01-15"
+        },
+        {
+            "customer_id": "CUST002",
+            "balance": 450000.50,
+            "currency": "USD",
+            "last_payment_date": "2024-01-10"
+        },
+        {
+            "customer_id": "CUST003",
+            "balance": 200000.75,
+            "currency": "USD",
+            "last_payment_date": "2024-01-15"
+        },
+        {
+            "customer_id": "CUST004",
+            "balance": 100000.50,
+            "currency": "USD",
+            "last_payment_date": "2024-01-10"
+        }
+    ]
+}

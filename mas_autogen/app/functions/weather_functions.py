@@ -1,4 +1,4 @@
-"""_summary_
+"""This module holds all the weather related functions.
 """
 
 import requests

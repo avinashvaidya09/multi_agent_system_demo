@@ -1,0 +1,36 @@
+{
+    "invoices": [
+        {
+            "invoice_id": "INV1001",
+            "customer_id": "CUST001",
+            "amount": 5000.00,
+            "currency": "USD",
+            "due_date": "2025-03-01",
+            "status": "Pending"
+        },
+        {
+            "invoice_id": "INV1002",
+            "customer_id": "CUST002",
+            "amount": 2500.00,
+            "currency": "USD",
+            "due_date": "2025-03-30",
+            "status": "Pending"
+        },
+        {
+            "invoice_id": "INV1003",
+            "customer_id": "CUST003",
+            "amount": 2500.00,
+            "currency": "USD",
+            "due_date": "2024-03-30",
+            "status": "Pending"
+        },
+        {
+            "invoice_id": "INV1004",
+            "customer_id": "CUST004",
+            "amount": 2500.00,
+            "currency": "USD",
+            "due_date": "2025-03-30",
+            "status": "Pending"
+        }
+    ]
+}

@@ -97,7 +97,7 @@ class WeatherAgent(SuperAgent):
             """
             return get_weather_data(zip_code)
 
-        # Register tools as functions
+        # Register functions with user proxy agent.
         user_proxy_agent.register_function(
             function_map={
                 "extract_zip_code": extract_zip_code,

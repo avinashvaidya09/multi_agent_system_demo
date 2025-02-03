@@ -4,6 +4,7 @@ Returns:
 """
 
 from fastapi import APIRouter, HTTPException
+from mas_autogen.app.agents.finance_agent import FinanceAgent
 from mas_autogen.app.agents.weather_agent import WeatherAgent
 
 router = APIRouter()
@@ -23,6 +24,8 @@ async def chat(agent_name: str, message: str):
 
     if agent_name.lower() == "weather_agent":
         agent_instance = WeatherAgent(agent_name=agent_name.lower())
+    elif agent_name.lower() == "finance_agent":
+        agent_instance = FinanceAgent(agent_name=agent_name.lower())
     else:
         raise HTTPException(
             status_code=404, detail=f"Agent with '{agent_name}' not available at this point."
