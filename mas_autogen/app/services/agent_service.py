@@ -22,13 +22,13 @@ async def chat(agent_name: str, message: str):
         The agent response.
     """
 
-    if agent_name.lower() == "weather_agent":
+    if agent_name.lower() == "weather":
         agent_instance = WeatherAgent(agent_name=agent_name.lower())
-    elif agent_name.lower() == "finance_agent":
+    elif agent_name.lower() == "finance":
         agent_instance = FinanceAgent(agent_name=agent_name.lower())
     else:
         raise HTTPException(
-            status_code=404, detail=f"Agent with '{agent_name}' not available at this point."
+            status_code=404, detail=f"Agent '{agent_name}' not available at this point."
         )
 
     sender_agent, receiver_agent = agent_instance.create_ai_agents()
