@@ -19,6 +19,7 @@ multi_agent_system_demo/
 
 ## Setup Instructions
 **Pre-requisites** - Install Poetry on you machine - https://python-poetry.org/docs/
+
 ### 1. Install Poetry & Dependencies
 ```
 poetry install
@@ -31,6 +32,8 @@ poetry shell
 
 ### 3. Run FastAPI Server
 ```
+cd mas_autogen/app
+
 python server.py
 ```
 
@@ -39,6 +42,18 @@ python server.py
 |--------|------------------|--------------------------|
 | `GET`  | `/health-check`  | Health check for the API |
 | `GET`  | `/chat   `       | Get response from agents     |
+
+## BTP Deployment
+
+1. Build project
+```
+mbt build
+```
+
+2. Deploy project
+```
+cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
+```
 
 ## OOPs conecpts leveraged
 
