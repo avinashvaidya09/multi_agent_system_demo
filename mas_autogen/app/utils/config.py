@@ -10,7 +10,10 @@ def load_environment_variables():
     """Loads enviroment variables from .env"""
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     env_path = os.path.join(base_dir, "..", ".env")
-    load_dotenv(env_path)
+    if env_path is not None:
+        load_dotenv(env_path)
+    else:
+        load_dotenv()
 
 
 # Load .env at import time if not already loaded

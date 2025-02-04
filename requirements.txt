@@ -1,0 +1,7 @@
+fastapi==0.103.0
+uvicorn==0.23.0
+requests==2.31.0
+autogen-agentchat==0.2.40
+python-dotenv==1.0.0
+loguru==0.7.0
+pydantic==2.4.2

@@ -5,7 +5,7 @@ version: 1.0.0
 modules:
   - name: multi_agent_system_demo
     type: python
-    path: /
+    path: ./
     parameters:
       health-check-type: process
       memory: 512M
