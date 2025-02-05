@@ -58,7 +58,7 @@ Content-Type: application/json
 
 {
     "agent_name": "FINANCE",
-    "message": "Get me the disputed items",
+    "message": "Get me the invoices for CUST001",
     "session_id": "123456"
 }
 
@@ -68,6 +68,6 @@ Content-Type: application/json
 
 {
     "agent_name": "FINANCE",
-    "message": "Done. Thanks",
+    "message": "Can you please send text message to the customer",
     "session_id": "123456"
 }

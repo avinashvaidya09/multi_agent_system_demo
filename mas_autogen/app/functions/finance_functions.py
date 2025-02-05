@@ -95,23 +95,6 @@ def get_invoices(customer_id: str) -> dict:
     return {"error": f"No invoice found for customer '{customer_id}'"}
 
 
-def get_disputed_items(customer_id: str) -> dict:
-    """This function gets the disputed items for the customer id.
-
-    Arguments:
-        customer_id -- The customer id.
-
-    Returns:
-        The disputed item details in JSON format.
-    """
-    disputed_items = load_data_from_json("disputed_items.json")
-    for disputed_item in disputed_items["disputed_items"]:
-        if disputed_item["customer_id"] == customer_id:
-            return disputed_item
-
-    return {"error": f"No disputed item found for customer '{customer_id}'"}
-
-
 def extract_customer_id_using_llm(user_input: str) -> str:
     """This function uses llms to extract customer id.
 
