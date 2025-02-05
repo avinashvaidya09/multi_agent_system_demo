@@ -2,8 +2,7 @@
 Returns:
     _description_
 """
-
-from typing import Dict, List
+from cachetools import TTLCache
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from mas_autogen.app.agents.finance_agent import FinanceAgent
@@ -11,8 +10,22 @@ from mas_autogen.app.agents.weather_agent import WeatherAgent
 
 router = APIRouter()
 
-# temporary session chat history. Can be replaced by redis
-session_chat_history_messages: Dict[str, List[str]] = {}
+
+# cachetools for caching requests
+session_cache = TTLCache(maxsize=100, ttl=3600)
+
+
+def store_char_history(session_id: str, message: str):
+    """Stores session chat history.
+
+    Arguments:
+        session_id -- Session id of the user.
+        message -- user message.
+    """
+    if session_id in session_cache:
+        session_cache[session_id].append(message)
+    else:
+        session_cache[session_id] = [message]
 
 
 class ChatRequest(BaseModel):
@@ -53,13 +66,9 @@ async def chat(request: ChatRequest):
         sender=sender_agent,
         receiver=receiver_agent,
         message=request.message,
-        session_history=session_chat_history_messages.get(request.session_id),
+        session_history=session_cache.get(request.session_id, []),
     )
 
-    if request.session_id not in session_chat_history_messages:
-        session_chat_history_messages[request.session_id] = [request.message]
-
-    else:
-        session_chat_history_messages[request.session_id].append(request.message)
+    store_char_history(request.session_id, message=request.message)
 
     return response

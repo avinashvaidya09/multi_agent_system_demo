@@ -87,6 +87,17 @@ websockets = ["websockets (>=12.0,<13)"]
 websurfer = ["beautifulsoup4", "mammoth", "markdownify", "openpyxl", "pandas", "pathvalidate", "pdfminer.six", "puremagic", "python-pptx", "youtube-transcript-api (==0.6.0)"]
 
 [[package]]
+name = "cachetools"
+version = "5.5.1"
+description = "Extensible memoizing collections and decorators"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "cachetools-5.5.1-py3-none-any.whl", hash = "sha256:b76651fdc3b24ead3c648bbdeeb940c1b04d365b38b4af66788f9ec4a81d42bb"},
+    {file = "cachetools-5.5.1.tar.gz", hash = "sha256:70f238fbba50383ef62e55c6aff6d9673175fe59f7c6782c7a0b9e38f4a9df95"},
+]
+
+[[package]]
 name = "certifi"
 version = "2025.1.31"
 description = "Python package for providing Mozilla's CA Bundle."
@@ -1162,4 +1173,4 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.12"
-content-hash = "8e935f5b92e75295a5b74804a266142600347fe2a4126cae189420250c1cf41b"
+content-hash = "dfdeffa5eb1e1ebd0ab0e4d097cafd1726e8090ae6a2d009b68bfa645f78229e"
