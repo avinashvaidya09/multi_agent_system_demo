@@ -19,7 +19,7 @@ Content-Type: application/json
     "session_id": "123456"
 }
 
-###
+### FINANCE AGENT REQUESTS
 
 POST http://localhost:8080/chat
 Content-Type: application/json
@@ -36,7 +36,7 @@ Content-Type: application/json
 
 {
     "agent_name": "FINANCE",
-    "message": "Get me the invoices",
+    "message": "I think I want to contact this customer. Give me his phone",
     "session_id": "123456"
 }
 

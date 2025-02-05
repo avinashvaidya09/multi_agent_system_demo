@@ -44,6 +44,23 @@ def get_customer_balance(customer_id: str) -> dict:
     return {"error": f"No balance found for customer '{customer_id}'"}
 
 
+def get_customer_contact(customer_id: str) -> dict:
+    """Get customer contact information.
+
+    Arguments:
+        customer_id -- The customer id.
+
+    Returns:
+        The customer information.
+    """
+    customer_info = load_data_from_json("customer.json")
+    for customer in customer_info["customers"]:
+        if customer["customer_id"] == customer_id:
+            return customer
+
+    return {"error": f"No details found for customer '{customer_id}'"}
+
+
 def get_customer_details(customer_id: str) -> dict:
     """This function gets the customer details for the customer id.
 
