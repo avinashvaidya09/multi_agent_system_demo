@@ -36,7 +36,7 @@ app.include_router(chat)
 if __name__ == "__main__":
     import uvicorn
 
-    if PORT is None:
+    if PORT is not None:
         uvicorn.run("server:app", host="0.0.0.0", port=int(PORT), reload=False)
     else:
         uvicorn.run("server:app", host="0.0.0.0", port=8080, reload=False)

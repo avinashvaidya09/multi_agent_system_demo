@@ -23,15 +23,18 @@ def extract_zip_code_using_llm(user_input: str) -> str:
         messages=[
             {
                 "role": "system",
-                "content": "You are a helpful assistant extracting ZIP codes from user input. "
-                "User input can be text like = 'Give me weather for 30041'"
-                "You only accept 5 digit USA zip codes. "
-                "If the user input is not a valid 5 digit USA zip code "
-                "then return 'None'",
+                "content": """
+                You are a helpful assistant extracting ZIP codes from user input. 
+                User input can be text like = 'Give me weather for 30041'
+                If the user input contains the zip code, extract it.
+                If the user input does not contain the zip code, 
+                use the last zip code mentioned in the session chat history provided along with the user input.
+                If no ZIP code is mentioned, return 'None'
+                """,
             },
             {
                 "role": "user",
-                "content": f"'{user_input}'."
+                "content": f"User Input: '{user_input}'"
                 "If no ZIP code is present, then return 'None'.",
             },
         ],

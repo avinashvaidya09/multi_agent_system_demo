@@ -111,10 +111,15 @@ def extract_customer_id_using_llm(user_input: str) -> str:
         messages=[
             {
                 "role": "system",
-                "content": "You are a helpful assistant extracting customer id from user input. "
-                "User input can be text like = 'Give me balance for CUST002' or 'Give me invoices for CUST001'"
-                "If you do not find customer id in the user input"
-                "then return 'None'",
+                "content": """
+                You are a helpful assistant extracting customer id from user input.
+                User input can be text like = 'Give me balance for CUST002' or 'Give me invoices for CUST001'
+                If the user input does not contain the customer id, 
+                use the last customer id mentioned in the Session Chat History provided along with the user input.
+                You do not have to keep on looping through all the customers in the Session Chat History. 
+                Just the get the last customer id mentioned in the Session Chat History.
+                If you do not find customer id in the user input then return 'None'
+                """,
             },
             {
                 "role": "user",

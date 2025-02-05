@@ -1,0 +1,73 @@
+
+POST http://localhost:8080/chat
+Content-Type: application/json
+
+{
+    "agent_name": "WEATHER",
+    "message": "What is the weather today at 30041",
+    "session_id": "123456"
+}
+
+###
+
+POST http://localhost:8080/chat
+Content-Type: application/json
+
+{
+    "agent_name": "WEATHER",
+    "message": "What is the weather today",
+    "session_id": "123456"
+}
+
+###
+
+POST http://localhost:8080/chat
+Content-Type: application/json
+
+{
+    "agent_name": "FINANCE",
+    "message": "Get me the customer details for CUST001",
+    "session_id": "123456"
+}
+
+###
+POST http://localhost:8080/chat
+Content-Type: application/json
+
+{
+    "agent_name": "FINANCE",
+    "message": "Get me the invoices",
+    "session_id": "123456"
+}
+
+###
+
+
+POST http://localhost:8080/chat
+Content-Type: application/json
+
+{
+    "agent_name": "FINANCE",
+    "message": "Get me the invoices for CUST003",
+    "session_id": "123456"
+}
+
+###
+POST http://localhost:8080/chat
+Content-Type: application/json
+
+{
+    "agent_name": "FINANCE",
+    "message": "Get me the disputed items",
+    "session_id": "123456"
+}
+
+###
+POST http://localhost:8080/chat
+Content-Type: application/json
+
+{
+    "agent_name": "FINANCE",
+    "message": "Done. Thanks",
+    "session_id": "123456"
+}

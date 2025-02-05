@@ -35,7 +35,7 @@ class FinanceAgent(SuperAgent):
                 You understand what the user wants from the user input.
                 Examples:
                 1. "Get me the customer details for customer 1234" - You will call 
-                    get_customer_details and return response.
+                    get_customer_details and return response. You will not get any more details if not asked.
                 
                 2. "Get me the balance for the customer 1234" - 
                     - You will first call get_customer_details, check if customer is active.
