@@ -1,11 +1,10 @@
-"""_summary_
-Returns:
-    _description_
+"""This module acts as a facade layer for the agents.
 """
+
 from cachetools import TTLCache
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from mas_autogen.app.agents.finance_agent import FinanceAgent
+from mas_autogen.app.agents.finance_group_chat_agent import FinanceGroupChatAgent
 from mas_autogen.app.agents.weather_agent import WeatherAgent
 
 router = APIRouter()
@@ -54,10 +53,10 @@ async def chat(request: ChatRequest):
     if agent_name.lower() == "weather":
         agent_instance = WeatherAgent(agent_name=agent_name.lower())
     elif agent_name.lower() == "finance":
-        agent_instance = FinanceAgent(agent_name=agent_name.lower())
+        agent_instance = FinanceGroupChatAgent(agent_name=agent_name.lower())
     else:
         raise HTTPException(
-            status_code=404, detail=f"Agent '{agent_name}' not available at this point."
+            status_code=404, detail=f"Agent '{agent_name}', not available at this point."
         )
 
     sender_agent, receiver_agent = agent_instance.create_ai_agents()

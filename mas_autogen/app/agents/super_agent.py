@@ -1,4 +1,4 @@
-"""This module is agent framework parent class."""
+"""This module is agent parent class."""
 
 from abc import ABC, abstractmethod
 

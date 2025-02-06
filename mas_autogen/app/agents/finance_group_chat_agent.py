@@ -2,8 +2,13 @@
 """
 
 import autogen
+from loguru import logger
 from mas_autogen.app.agents.super_agent import SuperAgent
-from mas_autogen.app.utils.llm_config import llm_config_for_finance_agent
+from mas_autogen.app.utils.llm_config import (
+    llm_config_for_finance_agent,
+    llm_config_for_csr_agent,
+    llm_config_for_group_chat_manager,
+)
 from mas_autogen.app.functions.finance_functions import (
     extract_customer_id_using_llm,
     get_customer_balance,
@@ -11,8 +16,14 @@ from mas_autogen.app.functions.finance_functions import (
     get_invoices,
     get_customer_contact,
 )
+from mas_autogen.app.utils.prompt_config import (
+    FINANCE_AGENT_PROMPT,
+    CSR_AGENT_PROMPT,
+    GROUP_CHAT_MANAGER_PROMPT,
+)
 
-class FinanceAgent(SuperAgent):
+
+class FinanceGroupChatAgent(SuperAgent):
     """This class implements create_ai_agents method.
 
     Arguments:
@@ -23,59 +34,56 @@ class FinanceAgent(SuperAgent):
 
         finance_agent = autogen.AssistantAgent(
             name="finance_agent",
-            system_message=(
-                """
-                You are a financial assistant. Your job is to extract the customer id 
-                from the user's input. You are responsible for: 
-                a. Get customer details
-                b. get customer contact information
-                c. Get customer balances
-                d. Get customer invoices
-
-                You understand what the user wants from the user input.
-                Examples:
-                1. "Get me the customer details for customer 1234" - You will call 
-                    fetch_customer_details and return response. You will not get any more details if not asked.
-                
-                2. If the user asks for email id or phone number for contacting the customer,
-                   For example - "I think I want to contact the customer CUST002" or "Give me email id to contact this customer"
-                   then you will call fetch_customer_info and return response to the user. You will give this information even if the 
-                   customer is inactive.
-                
-                3. "Get me the balance for the customer 1234" - 
-                    - You will first call get_customer_details, check if customer is active.
-                    - If customer is active, you will proceed to get the customer balance 
-                    using fetch_customer_balance function.
-                
-                4. For invoices, you will follow similar approach as mentioned 
-                   in point 3 but use fetch_invoices function respctively.
-
-                If there are multiple items, provide it in a list with numbers.
-                
-                You will provide suggestions to the user about the next possible steps.
-
-                If the user says, "Thanks" or "Done" or "Bye", respond professionally.
-
-                Once the data is retrieved and If current task is complete, 
-                you will return the response and reply 'TERMINATE.'.
-
-                You must explicitly state 'TERMINATE.' at the end of your response. 
-                
-                """
-            ),
+            system_message=FINANCE_AGENT_PROMPT,
             llm_config=llm_config_for_finance_agent,
+        )
+
+        csr_agent = autogen.AssistantAgent(
+            name="csr_agent",
+            system_message=CSR_AGENT_PROMPT,
+            llm_config=llm_config_for_csr_agent,
         )
 
         user_proxy_agent = autogen.UserProxyAgent(
             name="user_proxy",
             human_input_mode="NEVER",
-            is_termination_msg=lambda x: isinstance(x, dict)
-            and x.get("content")
-            and "TERMINATE" in x["content"].strip(),
             code_execution_config={
                 "use_docker": False,
             },
         )
+
+        allowed_transitions = {
+            user_proxy_agent: [finance_agent],
+            finance_agent: [user_proxy_agent, csr_agent],
+            csr_agent: [],
+        }
+
+        group_chat = autogen.GroupChat(
+            agents=[user_proxy_agent, finance_agent, csr_agent],
+            allowed_or_disallowed_speaker_transitions=allowed_transitions,
+            speaker_transitions_type="allowed",
+            messages=[],
+            max_round=20,
+            speaker_selection_method="auto",
+        )
+
+        groupchat_manager = autogen.GroupChatManager(
+            name="chat_manager",
+            groupchat=group_chat,
+            max_consecutive_auto_reply=20,
+            system_message=GROUP_CHAT_MANAGER_PROMPT,
+            human_input_mode="NEVER",
+            llm_config=llm_config_for_group_chat_manager,
+            is_termination_msg=lambda x: isinstance(x, dict)
+            and x.get("content")
+            and "TERMINATE" in x["content"].strip(),
+        )
+
+        def send_text_message(phone_number: str, message: str) -> str:
+            logger.info("******Text Message****** : " + phone_number)
+            logger.info("###########################################")
+            logger.info("Message: " + message)
+            return "Message sent to the customer: " + message
 
         def extract_customer_id(user_input: str) -> str:
             """
@@ -141,7 +149,8 @@ class FinanceAgent(SuperAgent):
                 "fetch_customer_info": fetch_customer_info,
                 "fetch_customer_balance": fetch_customer_balance,
                 "fetch_invoices": fetch_invoices,
+                "send_text_message": send_text_message,
             }
         )
 
-        return user_proxy_agent, finance_agent
+        return user_proxy_agent, groupchat_manager

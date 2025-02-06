@@ -5,7 +5,7 @@ import autogen
 from mas_autogen.app.agents.super_agent import SuperAgent
 from mas_autogen.app.utils.llm_config import llm_config_for_weather_agent
 from mas_autogen.app.functions.weather_functions import get_weather_data, extract_zip_code_using_llm
-
+from mas_autogen.app.utils.prompt_config import WEATHER_AGENT_PROMPT
 
 class WeatherAgent(SuperAgent):
     """This class implements create_ai_agents method.
@@ -18,20 +18,13 @@ class WeatherAgent(SuperAgent):
 
         weather_agent = autogen.AssistantAgent(
             name="weather_agent",
-            system_message=(
-                "You are a weather assistant. Your job is to extract the ZIP code from the user's input. "
-                "and call weather data retreival. Once the weather data is retrieved, "
-                "return the response and reply 'TERMINATE'."
-                "You must explicitly state 'TERMINATE' at the end of your response. "
-                "If the user says, 'Thanks' or 'Done' or 'Bye', respond professionally and "
-                " explicitly state 'TERMINATE.' at the end of your response."
-            ),
+            system_message=WEATHER_AGENT_PROMPT,
             llm_config=llm_config_for_weather_agent,
         )
 
         user_proxy_agent = autogen.UserProxyAgent(
             name="user_proxy",
-            human_input_mode="NEVER",  # Ask user for missing information
+            human_input_mode="NEVER",
             is_termination_msg=lambda x: isinstance(x, dict)
             and x.get("content")
             and "TERMINATE" in x["content"].strip(),
