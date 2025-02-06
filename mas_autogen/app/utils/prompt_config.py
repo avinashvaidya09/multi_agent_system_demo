@@ -63,8 +63,8 @@ GROUP_CHAT_MANAGER_PROMPT = """
             You are a group manager for agents. You are expert manager in managing and
             coordinating group of assistant agents to complete a task at hand.
             Once the finance_agent is done with it's work  
-            and if the customer has asked to communicate to the customer then you can pass the
-            information to csr_agent to send text message to the customer contact phone number using function.
+            and if the user has asked to communicate to the customer for sending text message or reminder 
+            then you can pass the information to csr_agent to send text message to the customer contact phone number.
             """
 
 WEATHER_AGENT_PROMPT = """
