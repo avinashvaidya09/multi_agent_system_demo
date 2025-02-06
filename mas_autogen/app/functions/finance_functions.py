@@ -3,13 +3,12 @@
 
 import json
 import os
-import openai
 from loguru import logger
-
-from mas_autogen.app.utils.config import OPENAI_API_KEY
+from langchain.schema import SystemMessage, HumanMessage
+from mas_autogen.app.utils.ai_core_config import AICoreConfig
 
 BASE_DIRECTORY = os.path.join(os.path.dirname(__file__), "../data")
-
+chat_llm = AICoreConfig().get_chat_llm()
 
 def load_data_from_json(file_name: str) -> dict:
     """This function loads data from the json.
@@ -104,29 +103,22 @@ def extract_customer_id_using_llm(user_input: str) -> str:
     Returns:
         The customer id.
     """
-    openai_client = openai.OpenAI(api_key=OPENAI_API_KEY)
-
-    response = openai_client.chat.completions.create(
-        model="gpt-4",
-        messages=[
-            {
-                "role": "system",
-                "content": """
-                You are a helpful assistant extracting customer id from user input.
-                User input can be text like = 'Give me balance for CUST002' or 'Give me invoices for CUST001'
-                If the user input does not contain the customer id, 
-                use the last customer id mentioned in the Session Chat History provided along with the user input.
-                You do not have to keep on looping through all the customers in the Session Chat History. 
-                Just the get the last customer id mentioned in the Session Chat History.
-                If you do not find customer id in the user input then return 'None'
-                """,
-            },
-            {
-                "role": "user",
-                "content": f"'{user_input}'." "If no customer id is present, then return 'None'.",
-            },
-        ],
-    )
-
-    customer_id = response.choices[0].message.content.strip()
+    input_messages = [
+        SystemMessage(
+            content="""
+                        You are a helpful assistant extracting customer id from user input.
+                        User input can be text like = 'Give me balance for CUST002' or 'Give me invoices for CUST001'
+                        If the user input does not contain the customer id, 
+                        use the last customer id mentioned in the Session Chat History provided along with the user input.
+                        You do not have to keep on looping through all the customers in the Session Chat History. 
+                        Just the get the last customer id mentioned in the Session Chat History.
+                        If you do not find customer id in the user input then return 'None'
+                        """
+        ),
+        HumanMessage(
+            content=f" User input '{user_input}'.If no customer id is present, then return 'None'."
+        ),
+    ]
+    response = chat_llm.invoke(input=input_messages)
+    customer_id = response.content.strip()
     return customer_id

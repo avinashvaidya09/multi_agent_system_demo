@@ -2,10 +2,13 @@
 """
 
 import requests
-import openai
-from loguru import logger
-from mas_autogen.app.utils.config import WEATHER_API_URL, WEATHER_API_KEY, OPENAI_API_KEY
 
+from langchain.schema import SystemMessage, HumanMessage
+from loguru import logger
+from mas_autogen.app.utils.ai_core_config import AICoreConfig
+from mas_autogen.app.utils.config import WEATHER_API_URL, WEATHER_API_KEY
+
+chat_llm = AICoreConfig().get_chat_llm()
 
 def extract_zip_code_using_llm(user_input: str) -> str:
     """This function uses llms to extract zip code.
@@ -16,31 +19,26 @@ def extract_zip_code_using_llm(user_input: str) -> str:
     Returns:
         The zip code.
     """
-    openai_client = openai.OpenAI(api_key=OPENAI_API_KEY)
 
-    response = openai_client.chat.completions.create(
-        model="gpt-4",
-        messages=[
-            {
-                "role": "system",
-                "content": """
-                You are a helpful assistant extracting ZIP codes from user input. 
-                User input can be text like = 'Give me weather for 30041'
-                If the user input contains the zip code, extract it.
-                If the user input does not contain the zip code, 
-                use the last zip code mentioned in the session chat history provided along with the user input.
-                If no ZIP code is mentioned, return 'None'
-                """,
-            },
-            {
-                "role": "user",
-                "content": f"User Input: '{user_input}'"
-                "If no ZIP code is present, then return 'None'.",
-            },
-        ],
-    )
+    input_messages = [
+        SystemMessage(
+            content="""
+                    You are a helpful assistant extracting ZIP codes from user input. 
+                    User input can be text like = 'Give me weather for 30041'
+                    If the user input contains the zip code, extract it.
+                    If the user input does not contain the zip code, 
+                    use the last zip code mentioned in the session chat history provided along with the user input.
+                    If no ZIP code is mentioned, return 'None'
+                      """
+        ),
+        HumanMessage(
+            content=f"User Input: '{user_input}' .If no ZIP code is present, then return 'None'."
+        ),
+    ]
 
-    zip_code = response.choices[0].message.content.strip()
+    response = chat_llm.invoke(input=input_messages)
+
+    zip_code = response.content.strip()
     return zip_code
 
 
