@@ -68,7 +68,7 @@ class FinanceAgent(SuperAgent):
 
         user_proxy_agent = autogen.UserProxyAgent(
             name="user_proxy",
-            human_input_mode="NEVER",  # Ask user for missing information
+            human_input_mode="NEVER",
             is_termination_msg=lambda x: isinstance(x, dict)
             and x.get("content")
             and "TERMINATE" in x["content"].strip(),

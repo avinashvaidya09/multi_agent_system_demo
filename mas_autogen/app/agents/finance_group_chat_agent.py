@@ -46,7 +46,7 @@ class FinanceGroupChatAgent(SuperAgent):
 
         user_proxy_agent = autogen.UserProxyAgent(
             name="user_proxy",
-            human_input_mode="NEVER",  # Ask user for missing information
+            human_input_mode="NEVER",
             code_execution_config={
                 "use_docker": False,
             },
