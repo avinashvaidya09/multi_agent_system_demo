@@ -36,7 +36,7 @@ Content-Type: application/json
 
 {
     "agent_name": "FINANCE",
-    "message": "I think I want to contact this customer. Give me his phone",
+    "message": "Please send a reminder to the customer about his pending invoice",
     "session_id": "123456"
 }
 
