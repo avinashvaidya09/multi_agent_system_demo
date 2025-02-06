@@ -22,7 +22,7 @@
             "customer_id": "CUST004",
             "address": "456 BOFA Ave, Charlotte, NC",
             "account_manager": "Rick Case",
-            "account_status": "Inactive"
+            "account_status": "Active"
         }
     ]
 }

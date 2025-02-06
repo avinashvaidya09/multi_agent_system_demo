@@ -1,4 +1,4 @@
-"""This module is for weather agent.
+"""This module is for finance agent.
 """
 
 import autogen
