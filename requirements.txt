@@ -6,3 +6,4 @@ python-dotenv==1.0.0
 loguru==0.7.0
 pydantic==2.4.2
 cachetools==5.5.1
+generative-ai-hub-sdk==4.3.1

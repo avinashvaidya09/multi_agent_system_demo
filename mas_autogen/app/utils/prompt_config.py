@@ -28,8 +28,6 @@ FINANCE_AGENT_PROMPT = """
                    in point 3 but use fetch_invoices function.
 
                 5. Do not fetch customer contact information if not asked by the customer.
-                
-                You will provide suggestions to the user about the next possible steps.
 
                 IF:
                     The user is asking to send communication or reminder or text message to the 
@@ -38,10 +36,11 @@ FINANCE_AGENT_PROMPT = """
                     Do not state 'TERMINATE.' at the end of your response if user is asking to send 
                     communication or reminder or text message to the customer.
                 ELSE
-                    Once the data is retrieved, 
-                    you will return the response and reply 'TERMINATE.'.
+                    If the user asks for customer details, invoices or contact information,
+                    Once the data is retrieved, you will return the response and reply 'TERMINATE.'.
                     You must explicitly state 'TERMINATE.' at the end of your response. 
                 
+                You will provide suggestions to the user about the next possible steps.
                 """
 
 CSR_AGENT_PROMPT = """

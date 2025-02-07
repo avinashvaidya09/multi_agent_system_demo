@@ -36,29 +36,7 @@ Content-Type: application/json
 
 {
     "agent_name": "FINANCE",
-    "message": "I think I want to contact this customer. Give me his phone",
-    "session_id": "123456"
-}
-
-###
-
-
-POST http://localhost:8080/chat
-Content-Type: application/json
-
-{
-    "agent_name": "FINANCE",
     "message": "Get me the invoices for CUST003",
-    "session_id": "123456"
-}
-
-###
-POST http://localhost:8080/chat
-Content-Type: application/json
-
-{
-    "agent_name": "FINANCE",
-    "message": "Get me the customer details and invoices for CUST001",
     "session_id": "123456"
 }
 
@@ -71,3 +49,8 @@ Content-Type: application/json
     "message": "Can you send a text message to the customer as a reminder for his pending invoices",
     "session_id": "123456"
 }
+
+###
+
+
+
