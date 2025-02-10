@@ -2,13 +2,11 @@
 """
 
 import requests
-
-from langchain.schema import SystemMessage, HumanMessage
+from gen_ai_hub.proxy.native.openai import chat  # pylint: disable=no-name-in-module
 from loguru import logger
-from mas_autogen.app.utils.ai_core_config import AICoreConfig
-from mas_autogen.app.utils.config import WEATHER_API_URL, WEATHER_API_KEY
 
-chat_llm = AICoreConfig().get_chat_llm()
+from mas_autogen.app.utils.config import WEATHER_API_KEY, WEATHER_API_URL
+
 
 def extract_zip_code_using_llm(user_input: str) -> str:
     """This function uses llms to extract zip code.
@@ -19,26 +17,28 @@ def extract_zip_code_using_llm(user_input: str) -> str:
     Returns:
         The zip code.
     """
-
     input_messages = [
-        SystemMessage(
-            content="""
+        {
+            "role": "system",
+            "content": """
                     You are a helpful assistant extracting ZIP codes from user input. 
                     User input can be text like = 'Give me weather for 30041'
                     If the user input contains the zip code, extract it.
                     If the user input does not contain the zip code, 
                     use the last zip code mentioned in the session chat history provided along with the user input.
                     If no ZIP code is mentioned, return 'None'
-                      """
-        ),
-        HumanMessage(
-            content=f"User Input: '{user_input}' .If no ZIP code is present, then return 'None'."
-        ),
+                      """,
+        },
+        {
+            "role": "user",
+            "content": f"'{user_input}'." "If no ZIP code is present, then return 'None'.",
+        },
     ]
 
-    response = chat_llm.invoke(input=input_messages)
+    kwargs = dict(model_name="gpt-4o", messages=input_messages)
+    response = chat.completions.create(**kwargs)
 
-    zip_code = response.content.strip()
+    zip_code = response.choices[0].message.content.strip()
     return zip_code
 
 
