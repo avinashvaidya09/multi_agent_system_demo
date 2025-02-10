@@ -16,7 +16,8 @@ python-dotenv = "^1.0.0"
 loguru = "^0.7.0"  
 pydantic = "^2.4.2" 
 cachetools = "^5.5.1"
-generative-ai-hub-sdk = { extras = ["all"], version = "^4.3.1" }
+langchain = "^0.3.17"
+generative-ai-hub-sdk = { extras = ["all"], version = "^3.8.0" }
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.3.3"
