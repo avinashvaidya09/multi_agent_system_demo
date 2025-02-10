@@ -1,4 +1,7 @@
+GET http://localhost:8080/zipcode?city=Atlanta
+Content-Type: application/json
 
+### Weather Agent
 POST http://localhost:8080/chat
 Content-Type: application/json
 
