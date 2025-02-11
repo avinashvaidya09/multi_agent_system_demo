@@ -2,7 +2,10 @@
 """
 
 import autogen
+from gen_ai_hub.proxy import GenAIHubProxyClient
+from gen_ai_hub.proxy.native.openai import OpenAI as OpenAIProxy
 from mas_autogen.app.agents.super_agent import SuperAgent
+from mas_autogen.app.utils.aicoreclient import AICoreClient
 from mas_autogen.app.utils.llm_config import llm_config_for_weather_agent
 from mas_autogen.app.functions.weather_functions import get_weather_data, extract_zip_code_using_llm
 from mas_autogen.app.utils.prompt_config import WEATHER_AGENT_PROMPT
@@ -15,6 +18,9 @@ class WeatherAgent(SuperAgent):
     """
 
     def create_ai_agents(self):
+
+        gen_ai_hub_proxy_client = GenAIHubProxyClient()
+        openai_proxy_client = OpenAIProxy(proxy_client=gen_ai_hub_proxy_client)
 
         weather_agent = autogen.AssistantAgent(
             name="weather_agent",
@@ -63,6 +69,10 @@ class WeatherAgent(SuperAgent):
                 "extract_zip_code": extract_zip_code,
                 "fetch_weather_data": fetch_weather_data,
             }
+        )
+
+        weather_agent.register_model_client(
+            model_client_cls=AICoreClient, client=openai_proxy_client
         )
 
         return user_proxy_agent, weather_agent

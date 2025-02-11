@@ -36,16 +36,7 @@ Content-Type: application/json
 
 {
     "agent_name": "FINANCE",
-    "message": "Get me the invoices for CUST003",
-    "session_id": "123456"
-}
-###
-POST http://localhost:8080/chat
-Content-Type: application/json
-
-{
-    "agent_name": "FINANCE",
-    "message": "Give me contact for this customer CUST001",
+    "message": "Get me the invoices for CUST004",
     "session_id": "123456"
 }
 

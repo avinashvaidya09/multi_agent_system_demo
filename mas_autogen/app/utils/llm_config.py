@@ -1,17 +1,12 @@
 """Hold the llm config for the agents
 """
 
-from mas_autogen.app.utils.config import OPENAI_API_KEY
 
-
-llm_config_for_group_chat_manager = {
-    "model": "gpt-4",
-    "api_key": OPENAI_API_KEY,
-}
+llm_config_for_group_chat_manager = {"model": "gpt-4o", "model_client_cls": "AICoreClient"}
 
 llm_config_for_weather_agent = {
-    "model": "gpt-4",
-    "api_key": OPENAI_API_KEY,
+    "model": "gpt-4o",
+    "model_client_cls": "AICoreClient",
     "functions": [
         {
             "name": "extract_zip_code",
@@ -46,8 +41,9 @@ llm_config_for_weather_agent = {
 }
 
 llm_config_for_csr_agent = {
-    "model": "gpt-4",
-    "api_key": OPENAI_API_KEY,
+    "model": "gpt-4o",
+    "model_client_cls": "AICoreClient",
+    "model_purpose": "agent",
     "functions": [
         {
             "name": "send_text_message",
@@ -66,28 +62,15 @@ llm_config_for_csr_agent = {
                 },
                 "required": ["phone_number", "message"],
             },
-        },
-        {
-            "name": "fetch_weather_data",
-            "description": "Fetch the current weather for a given ZIP code.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "zip_code": {
-                        "type": "string",
-                        "description": "The 5-digit ZIP code for which to retrieve weather.",
-                    }
-                },
-                "required": ["zip_code"],
-            },
-        },
+        }
     ],
     "timeout": 120,
 }
 
 llm_config_for_finance_agent = {
-    "model": "gpt-4",
-    "api_key": OPENAI_API_KEY,
+    "model": "gpt-4o",
+    "model_client_cls": "AICoreClient",
+    "model_purpose": "agent",
     "functions": [
         {
             "name": "extract_customer_id",

@@ -5,7 +5,7 @@ python-dotenv>=1.0.0
 cachetools==5.5.1
 loguru>=0.7.0
 generative-ai-hub-sdk==3.8.0
-autogen-agentchat~=0.2.40
+pyautogen==0.2.25
 
 
 

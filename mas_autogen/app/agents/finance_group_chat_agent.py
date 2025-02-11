@@ -2,8 +2,11 @@
 """
 
 import autogen
+from gen_ai_hub.proxy import GenAIHubProxyClient
+from gen_ai_hub.proxy.native.openai import OpenAI as OpenAIProxy
 from loguru import logger
 from mas_autogen.app.agents.super_agent import SuperAgent
+from mas_autogen.app.utils.aicoreclient import AICoreClient
 from mas_autogen.app.utils.llm_config import (
     llm_config_for_finance_agent,
     llm_config_for_csr_agent,
@@ -31,16 +34,19 @@ class FinanceGroupChatAgent(SuperAgent):
 
     def create_ai_agents(self):
 
-        finance_agent = autogen.AssistantAgent(
-            name="finance_agent",
-            system_message=FINANCE_AGENT_PROMPT,
-            llm_config=llm_config_for_finance_agent,
-        )
+        gen_ai_hub_proxy_client = GenAIHubProxyClient()
+        openai_proxy_client = OpenAIProxy(proxy_client=gen_ai_hub_proxy_client)
 
         csr_agent = autogen.AssistantAgent(
             name="csr_agent",
             system_message=CSR_AGENT_PROMPT,
             llm_config=llm_config_for_csr_agent,
+        )
+
+        finance_agent = autogen.AssistantAgent(
+            name="finance_agent",
+            system_message=FINANCE_AGENT_PROMPT,
+            llm_config=llm_config_for_finance_agent,
         )
 
         user_proxy_agent = autogen.UserProxyAgent(
@@ -49,6 +55,7 @@ class FinanceGroupChatAgent(SuperAgent):
             code_execution_config={
                 "use_docker": False,
             },
+            llm_config=False,
         )
 
         allowed_transitions = {
@@ -138,6 +145,16 @@ class FinanceGroupChatAgent(SuperAgent):
                 "fetch_invoices": fetch_invoices,
                 "send_text_message": send_text_message,
             }
+        )
+
+        csr_agent.register_model_client(model_client_cls=AICoreClient, client=openai_proxy_client)
+
+        finance_agent.register_model_client(
+            model_client_cls=AICoreClient, client=openai_proxy_client
+        )
+
+        groupchat_manager.register_model_client(
+            model_client_cls=AICoreClient, client=openai_proxy_client
         )
 
         return user_proxy_agent, groupchat_manager
