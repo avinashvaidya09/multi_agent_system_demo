@@ -3,6 +3,7 @@
 
 from cachetools import TTLCache
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from mas_autogen.app.agents.finance_group_chat_agent import FinanceGroupChatAgent
 from mas_autogen.app.agents.weather_agent import WeatherAgent
@@ -68,6 +69,7 @@ async def chat(request: ChatRequest):
         session_history=session_cache.get(request.session_id, []),
     )
 
-    store_char_history(request.session_id, message=request.message)
+    # store_char_history(request.session_id, message=request.message)
+    json_response = JSONResponse(content={"message": response})
 
-    return response
+    return json_response

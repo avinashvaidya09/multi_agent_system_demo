@@ -6,6 +6,7 @@ Serves as an entry point for handling requests and routing
 them to appropriate agents.
 """
 import os
+import json
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from mas_autogen.app.utils.config import load_environment_variables

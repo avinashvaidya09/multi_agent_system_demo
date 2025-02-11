@@ -14,7 +14,6 @@ requests = "^2.31.0"
 autogen-agentchat = "~0.2.40" 
 python-dotenv = "^1.0.0"
 loguru = "^0.7.0"  
-pydantic = "^2.4.2" 
 cachetools = "^5.5.1"
 generative-ai-hub-sdk = { extras = ["all"], version = "^4.3.1" }
 

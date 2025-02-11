@@ -9,7 +9,6 @@ from mas_autogen.app.functions.finance_functions import (
     get_customer_balance,
     get_customer_details,
     get_invoices,
-    get_customer_contact,
 )
 
 class FinanceAgent(SuperAgent):
@@ -39,7 +38,7 @@ class FinanceAgent(SuperAgent):
                 
                 2. If the user asks for email id or phone number for contacting the customer,
                    For example - "I think I want to contact the customer CUST002" or "Give me email id to contact this customer"
-                   then you will call fetch_customer_info and return response to the user. You will give this information even if the 
+                   then you will call fetch_customer_details and return response to the user. You will give this information even if the 
                    customer is inactive.
                 
                 3. "Get me the balance for the customer 1234" - 
@@ -89,17 +88,6 @@ class FinanceAgent(SuperAgent):
             """
             return extract_customer_id_using_llm(user_input=user_input)
 
-        def fetch_customer_info(customer_id: str) -> dict:
-            """Fetches customer information.
-
-            Arguments:
-                customer_id -- The customer id
-
-            Returns:
-                The customer information.
-            """
-            return get_customer_contact(customer_id=customer_id)
-
         def fetch_customer_details(customer_id: str) -> dict:
             """Fetches the customer details.
 
@@ -138,7 +126,6 @@ class FinanceAgent(SuperAgent):
             function_map={
                 "extract_customer_id": extract_customer_id,
                 "fetch_customer_details": fetch_customer_details,
-                "fetch_customer_info": fetch_customer_info,
                 "fetch_customer_balance": fetch_customer_balance,
                 "fetch_invoices": fetch_invoices,
             }

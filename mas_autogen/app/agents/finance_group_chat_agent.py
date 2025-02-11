@@ -14,7 +14,6 @@ from mas_autogen.app.functions.finance_functions import (
     get_customer_balance,
     get_customer_details,
     get_invoices,
-    get_customer_contact,
 )
 from mas_autogen.app.utils.prompt_config import (
     FINANCE_AGENT_PROMPT,
@@ -83,7 +82,7 @@ class FinanceGroupChatAgent(SuperAgent):
             logger.info("******Text Message****** : " + phone_number)
             logger.info("###########################################")
             logger.info("Message: " + message)
-            return "Message sent to the customer: " + message
+            return "Message sent to the customer: " + message + " TERMINATE."
 
         def extract_customer_id(user_input: str) -> str:
             """
@@ -96,17 +95,6 @@ class FinanceGroupChatAgent(SuperAgent):
                 str: The extracted ZIP code or None.
             """
             return extract_customer_id_using_llm(user_input=user_input)
-
-        def fetch_customer_info(customer_id: str) -> dict:
-            """Fetches customer information.
-
-            Arguments:
-                customer_id -- The customer id
-
-            Returns:
-                The customer information.
-            """
-            return get_customer_contact(customer_id=customer_id)
 
         def fetch_customer_details(customer_id: str) -> dict:
             """Fetches the customer details.
@@ -146,7 +134,6 @@ class FinanceGroupChatAgent(SuperAgent):
             function_map={
                 "extract_customer_id": extract_customer_id,
                 "fetch_customer_details": fetch_customer_details,
-                "fetch_customer_info": fetch_customer_info,
                 "fetch_customer_balance": fetch_customer_balance,
                 "fetch_invoices": fetch_invoices,
                 "send_text_message": send_text_message,
