@@ -20,7 +20,7 @@ def load_data_from_json(file_name: str) -> dict:
     file_path = os.path.join(BASE_DIRECTORY, file_name)
     with open(file_path, "r", encoding="utf-8") as file:
         data = json.load(file)
-    logger.info(data)
+    # logger.info(data)
     return data
 
 
@@ -39,23 +39,6 @@ def get_customer_balance(customer_id: str) -> dict:
             return balance
 
     return {"error": f"No balance found for customer '{customer_id}'"}
-
-
-def get_customer_contact(customer_id: str) -> dict:
-    """Get customer contact information.
-
-    Arguments:
-        customer_id -- The customer id.
-
-    Returns:
-        The customer information.
-    """
-    customer_info = load_data_from_json("customer.json")
-    for customer in customer_info["customers"]:
-        if customer["customer_id"] == customer_id:
-            return customer
-
-    return {"error": f"No details found for customer '{customer_id}'"}
 
 
 def get_customer_details(customer_id: str) -> dict:

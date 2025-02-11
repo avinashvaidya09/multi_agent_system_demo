@@ -32,30 +32,6 @@ async def health_check():
         content={"message": "Hello Again! Your Multi Agent System is up and running"}
     )
 
-
-@app.get("/zipcode")
-async def get_zip_code(city: str):
-    """Returns the zip code for the city.
-
-    Arguments:
-        city -- The city.
-
-    Returns:
-        The zip code.
-    """
-    zip_code = "30041"
-    if city == "Atlanta":
-        zip_code = "30041"
-    if city == "New York":
-        zip_code = "10012"
-
-    response_dict = {"body": {"message": zip_code}}
-
-    json_response = json.dumps(response_dict)
-
-    return json_response
-
-
 app.include_router(chat)
 
 if __name__ == "__main__":

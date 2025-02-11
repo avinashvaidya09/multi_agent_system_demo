@@ -1,6 +1,3 @@
-GET http://localhost:8080/zipcode?city=Atlanta
-Content-Type: application/json
-
 ### Weather Agent
 POST http://localhost:8080/chat
 Content-Type: application/json
@@ -42,6 +39,15 @@ Content-Type: application/json
     "message": "Get me the invoices for CUST003",
     "session_id": "123456"
 }
+###
+POST http://localhost:8080/chat
+Content-Type: application/json
+
+{
+    "agent_name": "FINANCE",
+    "message": "Give me contact for this customer CUST001",
+    "session_id": "123456"
+}
 
 ###
 POST http://localhost:8080/chat
@@ -49,7 +55,7 @@ Content-Type: application/json
 
 {
     "agent_name": "FINANCE",
-    "message": "Can you send a text message to the customer as a reminder for his pending invoices",
+    "message": "Can you send a text message to the customer CUST001 as a reminder for his pending invoice INV001",
     "session_id": "123456"
 }
 
