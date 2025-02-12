@@ -68,11 +68,12 @@ def get_invoices(customer_id: str) -> dict:
         The invoices details in JSON format.
     """
     invoices = load_data_from_json("invoices.json")
+    pending_invoices = []
     for invoice in invoices["invoices"]:
         if invoice["customer_id"] == customer_id:
-            return invoice
+            pending_invoices.append(invoice)
 
-    return {"error": f"No invoice found for customer '{customer_id}'"}
+    return pending_invoices
 
 
 def extract_customer_id_using_llm(user_input: str) -> str:
