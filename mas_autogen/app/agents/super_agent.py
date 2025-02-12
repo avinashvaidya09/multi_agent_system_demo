@@ -38,4 +38,6 @@ class SuperAgent(ABC):
             message=(f"{message}{"."} {session_history_for_user}"),
         )
 
-        return response.chat_history[-1]["content"].replace("TERMINATE.", "").strip()
+        return (
+            response.chat_history[-1]["content"].replace("TERMINATE.", "").replace("**", "").strip()
+        )

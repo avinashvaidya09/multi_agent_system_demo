@@ -6,7 +6,7 @@
             "account_manager": "Michael Johnson",
             "account_status": "Active",
             "company": "Acme Corp",
-            "email": "Michael.johnson@acmecorp.com",
+            "email": "john.doe@acmecorp.com",
             "phone": "+1-555-1234-1234"
         },
         {
@@ -15,7 +15,7 @@
             "account_manager": "Sarah Lee",
             "account_status": "Inactive",
             "company": "Global Tech",
-            "email": "sarah.lee@globaltech.com",
+            "email": "james.wilson@globaltech.com",
             "phone": "+1-555-5678-1234"
         },
         {
@@ -24,7 +24,7 @@
             "account_manager": "Jack Lu",
             "account_status": "Active",
             "company": "Planet IT",
-            "email": "jack.lu@planetit.com",
+            "email": "nick.dawson@planetit.com",
             "phone": "+1-555-5678-4321"
         },
         {
@@ -33,7 +33,7 @@
             "account_manager": "Rick Case",
             "account_status": "Active",
             "company": "Earth Tech",
-            "email": "rick.case@earthtech.com",
+            "email": "tom.rise@earthtech.com",
             "phone": "+1-555-567-9876"
         }
     ]
