@@ -82,4 +82,9 @@ cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
 - **Pylint** is configured for linting.
 
 
+## References
+1. https://microsoft.github.io/autogen/0.2/docs/tutorial/introduction
+2. https://microsoft.github.io/autogen/0.2/blog/2024/01/26/Custom-Models
+3. https://github.com/microsoft/autogen/issues/2929
+
 
