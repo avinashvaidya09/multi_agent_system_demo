@@ -8,12 +8,15 @@ modules:
     path: ./
     parameters:
       health-check-type: process
-      memory: 512M
-      disk-quota: 512M
     build-parameters:
       buildpack: python_buildpack
       command: python mas_autogen/app/server.py
     properties:
       WEATHER_API_URL: https://api.weatherapi.com/v1/current.json
-      OPENAI_API_KEY: <Your OPENAI_API_KEY>
-      WEATHER_API_KEY: <Your WEATHER_API_KEY>
+      OPENAI_API_KEY: <OPENAI_API_KEY>
+      WEATHER_API_KEY: <WEATHER_API_KEY>
+      AICORE_AUTH_URL: <AICORE_AUTH_URL>
+      AICORE_CLIENT_ID: <AICORE_CLIENT_ID>
+      AICORE_CLIENT_SECRET: <AICORE_CLIENT_SECRET>
+      AICORE_RESOURCE_GROUP: default
+      AICORE_BASE_URL: <AICORE_BASE_URL>
