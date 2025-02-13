@@ -77,9 +77,9 @@ cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
 | **Production Ready**       | ✅ Scales well with Uvicorn & Gunicorn | ✅ Stable but synchronous                  |
 
 
-## Formatting & Linting
+## Formatting & Linting VS code plugins
 - **Black** is used for auto-formatting.
 - **Pylint** is configured for linting.
-- Run autoformatting manually using:
+
 
 
