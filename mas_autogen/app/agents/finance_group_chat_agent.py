@@ -89,7 +89,7 @@ class FinanceGroupChatAgent(SuperAgent):
             logger.info("******Text Message****** : " + phone_number)
             logger.info("###########################################")
             logger.info("Message: " + message)
-            return "Message sent to the customer: " + message + " TERMINATE."
+            return "Contact:" + phone_number + ". Message: " + message + " TERMINATE."
 
         def extract_customer_id(user_input: str) -> str:
             """
