@@ -16,7 +16,7 @@ session_cache = TTLCache(maxsize=100, ttl=3600)
 
 
 def store_char_history(session_id: str, message: str):
-    """Stores session chat history.
+    """TBD: Stores session chat history.
 
     Arguments:
         session_id -- Session id of the user.
@@ -63,13 +63,9 @@ async def chat(request: ChatRequest):
     sender_agent, receiver_agent = agent_instance.create_ai_agents()
 
     response = agent_instance.start_chat(
-        sender=sender_agent,
-        receiver=receiver_agent,
-        message=request.message,
-        session_history=session_cache.get(request.session_id, []),
+        sender=sender_agent, receiver=receiver_agent, message=request.message
     )
 
-    # store_char_history(request.session_id, message=request.message)
     json_response = JSONResponse(content={"message": response})
 
     return json_response

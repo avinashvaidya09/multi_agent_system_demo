@@ -59,9 +59,9 @@ cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
 
 | OOP Concept       | How It’s Used |
 |-------------------|---------------|
-| **Abstraction**   | `AgentFramework` defines a structure and hides implementation details using `@abstractmethod`. |
-| **Inheritance**   | `WeatherAgent` extends `AgentFramework`, inheriting its common logic like `start_chat()`. |
-| **Encapsulation** | Each agent’s internal behavior is hidden from the caller. |
+| **Abstraction**   | `SuperAgent` defines a structure and hides implementation details using `@abstractmethod`. |
+| **Inheritance**   | `WeatherAgent` extends `SuperAgent`, inheriting its common logic like `start_chat()`. |
+| **Encapsulation** | Each agent’s internal behavior is hidden from the caller |
 | **Polymorphism**  | `start_chat()` is generic and works with different agents that implement `create_ai_agents()`. |
 
 

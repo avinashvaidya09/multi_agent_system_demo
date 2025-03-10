@@ -17,7 +17,7 @@ class SuperAgent(ABC):
     def create_ai_agents(self):
         """This is an abstract method."""
 
-    def start_chat(self, sender, receiver, message, session_history):
+    def start_chat(self, sender, receiver, message):
         """This function initiates the chat.
 
         Arguments:
@@ -28,14 +28,10 @@ class SuperAgent(ABC):
         Returns:
             The final answer or error.
         """
-        session_history_for_user = (
-            "Session Chat History: " + ":".join(f"{msg}." for msg in session_history)
-            if session_history
-            else ""
-        )
+
         response = sender.initiate_chat(
             receiver,
-            message=(f"{message}{"."} {session_history_for_user}"),
+            message=(f"{message}"),
         )
 
         return (

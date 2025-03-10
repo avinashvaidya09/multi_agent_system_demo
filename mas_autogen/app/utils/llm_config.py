@@ -43,7 +43,6 @@ llm_config_for_weather_agent = {
 llm_config_for_csr_agent = {
     "model": "gpt-4o",
     "model_client_cls": "AICoreClient",
-    "model_purpose": "agent",
     "functions": [
         {
             "name": "send_text_message",
@@ -70,7 +69,6 @@ llm_config_for_csr_agent = {
 llm_config_for_finance_agent = {
     "model": "gpt-4o",
     "model_client_cls": "AICoreClient",
-    "model_purpose": "agent",
     "functions": [
         {
             "name": "extract_customer_id",

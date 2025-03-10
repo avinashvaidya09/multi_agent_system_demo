@@ -26,5 +26,4 @@ class AICoreClient(OpenAIClient):
     def create(self, params: Dict[str, Any]) -> ChatCompletion:
 
         params.pop("model_client_cls", None)
-        params.pop("model_purpose", None)
         return super().create(params)
