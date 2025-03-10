@@ -1,7 +1,20 @@
-# Multi-Agent System Demo
+# Multi Agent System Demo
 
 ## Introduction
-This project is my effort to demonstrate a **multi agent system** using **Microsoft AutoGen** for AI-driven automation. 
+This project is my effort to demonstrate a **Agentic AI** using **Microsoft AutoGen** for AI-driven intelligence. 
+In this project you will learn
+
+1. Create autonomous agents using LLMs and functions
+2. Integrate with custom llm models
+3. Leverage APIs and LLMs as tools
+4. Create multi agent systems
+5. Expose multi agent systems as REST APIs
+
+As part of this project you will also learn
+
+1. A clean python project structure
+2. Leveraging Python OOP and structural programming paradigms.
+3. Why use FAST API?
 
 ## Project Structure
 ```
@@ -20,44 +33,50 @@ multi_agent_system_demo/
 ## Setup Instructions
 **Pre-requisites** - Install Poetry on you machine - https://python-poetry.org/docs/
 
-### 1. Install Poetry & Dependencies
+#### 1. Clone the github repo
+
+#### 2. Install Poetry & Dependencies
 ```
 poetry install
 ```
 
-### 2. Activate Virtual Environment
+#### 3. Activate Virtual Environment
 ```
 poetry shell
 ```
 
-### 3. Run FastAPI Server
+#### 4. Run FastAPI Server
 ```
-cd mas_autogen/app
+cd mas_autogen/app && python server.py
+```
 
-python server.py
-```
+#### 5. Test your application
+
+1. Pre-requisite: **REST Client** extension for visual studio code.
+2. Open [requests.http](/requests.http)
+3. Click of **Send Request** on any of the available sample requests
 
 ## API Endpoints
 | Method | Endpoint         | Description              |
 |--------|------------------|--------------------------|
 | `GET`  | `/health-check`  | Health check for the API |
-| `GET`  | `/chat   `       | Get response from agents     |
+| `GET`  | `/chat   `       | Get response from agents |
 
 ## BTP Deployment
 
-1. Build project
+#### 1. Build project
 ```
 mbt build
 ```
 
-2. Deploy project
+#### 2. Deploy project
 ```
 cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
 ```
 
-## OOPs conecpts leveraged
+## OOPs concepts 
 
-| OOP Concept       | How It’s Used |
+| OOP Concept       | Usage         |
 |-------------------|---------------|
 | **Abstraction**   | `SuperAgent` defines a structure and hides implementation details using `@abstractmethod`. |
 | **Inheritance**   | `WeatherAgent` extends `SuperAgent`, inheriting its common logic like `start_chat()`. |
@@ -80,6 +99,7 @@ cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
 ## Formatting & Linting VS code plugins
 - **Black** is used for auto-formatting.
 - **Pylint** is configured for linting.
+- **Rest Client** is configured for API testing.
 
 
 ## References
