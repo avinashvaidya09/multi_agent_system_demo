@@ -17,13 +17,11 @@ class AICoreClient(OpenAIClient):
     """
 
     def __init__(self, kwargs, client: OpenAI | None = None):
-
         if client is None:
             client = OpenAIProxy(proxy_client=GenAIHubProxyClient())
 
         super().__init__(client)
 
     def create(self, params: Dict[str, Any]) -> ChatCompletion:
-
         params.pop("model_client_cls", None)
         return super().create(params)

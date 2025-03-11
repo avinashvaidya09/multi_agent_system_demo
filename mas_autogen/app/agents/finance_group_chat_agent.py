@@ -86,6 +86,15 @@ class FinanceGroupChatAgent(SuperAgent):
         )
 
         def send_text_message(phone_number: str, message: str) -> str:
+            """Mock method to send text message to a phone number asynchornously.
+
+            Arguments:
+                phone_number -- The customer phone number.
+                message -- The reminder message.
+
+            Returns:
+                The reminder message sent to the customer.
+            """
             logger.info("******Text Message****** : " + phone_number)
             logger.info("###########################################")
             logger.info("Message: " + message)
