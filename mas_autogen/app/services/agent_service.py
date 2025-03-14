@@ -7,9 +7,11 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from mas_autogen.app.agents.finance_group_chat_agent import FinanceGroupChatAgent
 from mas_autogen.app.agents.weather_agent import WeatherAgent
+from mas_autogen.app.utils.agent_observability import AgentObservability
 
 router = APIRouter()
 
+agent_observability_mas = AgentObservability(service_name="mas_app")
 
 # cachetools for caching requests
 session_cache = TTLCache(maxsize=100, ttl=3600)
@@ -41,6 +43,7 @@ class ChatRequest(BaseModel):
 
 
 @router.post("/chat")
+@agent_observability_mas.metric_decorator(endpoint="/chat")
 async def chat(request: ChatRequest):
     """API endpoint to interact with AI agents dynamically.
 

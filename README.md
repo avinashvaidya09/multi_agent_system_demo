@@ -101,6 +101,29 @@ cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
 - **Pylint** is configured for linting.
 - **Rest Client** is configured for API testing.
 
+## Agent Evaluation
+1. Lets evaluate agents with the help of open telemetry.
+2. Import below libraries
+    ```
+    poetry add opentelemetry-sdk
+    poetry add opentelemetry-api
+    poetry add opentelemetry-exporter-prometheus
+    ```
+3. The above libraries provide below features 
+    - opentelemetry-api → API interface for traces and metrics.
+    - opentelemetry-sdk → SDK for collecting and processing data.
+    - opentelemetry-exporter-prometheus → Exporter to view metrics locally.   
+
+4. Created a observability class - [agent_observability.py](/mas_autogen/app/utils/agent_observability.py)
+
+5. Add decorator on the api endpoint in agent_service.py
+    ```
+    @router.post("/chat")
+    @agent_observability.metric_decorator(endpoint="/chat")
+    async def chat(request: ChatRequest):
+    ...
+    ...
+    ```
 
 ## References
 1. https://microsoft.github.io/autogen/0.2/docs/tutorial/introduction

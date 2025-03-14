@@ -15,7 +15,7 @@ Content-Type: application/json
 
 {
     "agent_name": "WEATHER",
-    "message": "What is the weather today",
+    "message": "What is the weather today at 30041",
     "session_id": "123456"
 }
 
