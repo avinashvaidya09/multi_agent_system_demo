@@ -5,9 +5,13 @@ import requests
 from gen_ai_hub.proxy.native.openai import chat  # pylint: disable=no-name-in-module
 from loguru import logger
 
+from mas_autogen.app.utils.agent_observability import AgentObservability
 from mas_autogen.app.utils.config import WEATHER_API_KEY, WEATHER_API_URL
 
+agent_observability_mas = AgentObservability(service_name="mas_app")
 
+
+@agent_observability_mas.trace_agent_function(function_name="extract_zip_code_using_llm")
 def extract_zip_code_using_llm(user_input: str) -> str:
     """This function uses llms to extract zip code.
 
@@ -42,6 +46,7 @@ def extract_zip_code_using_llm(user_input: str) -> str:
     return zip_code
 
 
+@agent_observability_mas.trace_agent_function(function_name="get_weather_data")
 def get_weather_data(zip_code: str) -> dict:
     """This function calls weather api to get the data.
 

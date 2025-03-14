@@ -13,23 +13,6 @@ router = APIRouter()
 
 agent_observability_mas = AgentObservability(service_name="mas_app")
 
-# cachetools for caching requests
-session_cache = TTLCache(maxsize=100, ttl=3600)
-
-
-def store_char_history(session_id: str, message: str):
-    """TBD: Stores session chat history.
-
-    Arguments:
-        session_id -- Session id of the user.
-        message -- user message.
-    """
-    if session_id in session_cache:
-        session_cache[session_id].append(message)
-    else:
-        session_cache[session_id] = [message]
-
-
 class ChatRequest(BaseModel):
     """Chat Request Base Model
 
