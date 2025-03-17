@@ -1,7 +1,6 @@
 """This module acts as a facade layer for the agents.
 """
 
-from cachetools import TTLCache
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel

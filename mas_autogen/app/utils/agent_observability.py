@@ -9,10 +9,17 @@ from functools import wraps
 from opentelemetry.sdk.resources import Resource
 from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import SimpleSpanProcessor, ConsoleSpanExporter
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from opentelemetry.sdk.trace.export import (
+    SimpleSpanProcessor,
+    ConsoleSpanExporter,
+    BatchSpanProcessor,
+)
 from opentelemetry.sdk.metrics import MeterProvider
 from opentelemetry.metrics import set_meter_provider
 from opentelemetry.sdk.metrics.export import ConsoleMetricExporter, PeriodicExportingMetricReader
+from opentelemetry.exporter.prometheus import PrometheusMetricReader
+from prometheus_client import start_http_server
 
 
 class AgentObservability:
@@ -54,12 +61,27 @@ class AgentObservability:
         # Set up OpenTelemetry Tracing
         self.tracer_provider = TracerProvider(resource=self.resource)
         trace.set_tracer_provider(self.tracer_provider)
+
+        # Export traces to console for debugging
         self.tracer_provider.add_span_processor(SimpleSpanProcessor(ConsoleSpanExporter()))
+
+        # Export traces to Grafana Tempo
+        otlp_exporter = OTLPSpanExporter(
+            endpoint="http://localhost:4327", insecure=True
+        )  # TBD: Remove insecure=True for production
+        self.tracer_provider.add_span_processor(BatchSpanProcessor(otlp_exporter))
+
+        # Tracer
         self.tracer = trace.get_tracer(service_name)
 
-        # Set up a meter provider for metric collection
+        # Set up OpenTelemetry Metrics
+        start_http_server(8000)  # Metrics endpoint http://localhost:8000/metrics
+        prometheus_reader = PrometheusMetricReader()
         self.meter_provider = MeterProvider(
-            metric_readers=[PeriodicExportingMetricReader(ConsoleMetricExporter())],
+            metric_readers=[
+                prometheus_reader,
+                PeriodicExportingMetricReader(ConsoleMetricExporter()),
+            ],
             resource=self.resource,
         )
 
