@@ -5,7 +5,7 @@ This project is my effort to demonstrate a **Agentic AI** using **Microsoft Auto
 In this project you will learn
 
 1. Create autonomous agents using LLMs and functions
-2. Integrate with custom llm models
+2. Integrate with custom LLM models
 3. Leverage APIs and LLMs as tools
 4. Create multi agent systems
 5. Expose multi agent systems as REST APIs
@@ -46,7 +46,7 @@ AICORE_CLIENT_SECRET: <AICORE_CLIENT_SECRET>
 AICORE_RESOURCE_GROUP: default
 AICORE_BASE_URL: <AICORE_BASE_URL>
 ```
-- If you are using OPENAI API you have to update the LLM configuration accordingly. I have kept the key attribute herem but as I am using custom model, I am not using it.
+- If you are using OPENAI API you have to update the LLM configuration accordingly. I have kept the key attribute here but as I am using custom model, I am not using it.
 - If you are using AICORE client as custom model, you have to update the AICORE properties required by generative AI hub sdk.
 
 #### 3. Install Poetry & Dependencies
