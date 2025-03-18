@@ -35,22 +35,36 @@ multi_agent_system_demo/
 
 #### 1. Clone the github repo
 
-#### 2. Install Poetry & Dependencies
+#### 2. Create your own .env file and add the value for the below properties.
+```
+WEATHER_API_URL: https://api.weatherapi.com/v1/current.json
+OPENAI_API_KEY: <OPENAI_API_KEY>
+WEATHER_API_KEY: <WEATHER_API_KEY>
+AICORE_AUTH_URL: <AICORE_AUTH_URL>
+AICORE_CLIENT_ID: <AICORE_CLIENT_ID>
+AICORE_CLIENT_SECRET: <AICORE_CLIENT_SECRET>
+AICORE_RESOURCE_GROUP: default
+AICORE_BASE_URL: <AICORE_BASE_URL>
+```
+- If you are using OPENAI API you have to update the LLM configuration accordingly. I have kept the key attribute herem but as I am using custom model, I am not using it.
+- If you are using AICORE client as custom model, you have to update the AICORE properties required by generative AI hub sdk.
+
+#### 3. Install Poetry & Dependencies
 ```
 poetry install
 ```
 
-#### 3. Activate Virtual Environment
+#### 4. Activate Virtual Environment
 ```
 poetry shell
 ```
 
-#### 4. Run FastAPI Server
+#### 5. Run FastAPI Server
 ```
 cd mas_autogen/app && python server.py
 ```
 
-#### 5. Test your application
+#### 6. Test your application
 
 1. Pre-requisite: **REST Client** extension for visual studio code.
 2. Open [requests.http](/requests.http)
