@@ -102,21 +102,25 @@ cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
 - **Rest Client** is configured for API testing.
 
 ## Agent Evaluation
-1. Lets evaluate agents with the help of open telemetry.
-2. Import below libraries
+1. Building agents is one thing, but evaluating their performance is also very critical for successful implementation of Agentic AI solutions. In this section, I will walk you through the observability stack, which can be integrated with your application to visualize performance metrics for the agents and their functions.
+
+2. Usecase: To make this interesting, I have captured the response times
+of the **/chat** endpoint and agent function **/get_weather_data**. At the end of the tutorial, you should be able to visualize your agent performance. Let's start.
+
+3. Import below libraries
     ```
     poetry add opentelemetry-sdk
     poetry add opentelemetry-api
     ```
-3. The above libraries provide below features 
+4. The above libraries provide below features 
     - opentelemetry-api → API interface for traces and metrics.
     - opentelemetry-sdk → SDK for collecting and processing data.
     - opentelemetry-exporter-prometheus → Exporter to view metrics locally.   
 
-4. Created a observability class - [agent_observability.py](/mas_autogen/app/utils/agent_observability.py). In this class, I have created two methods, one for tracing the API endpoints and other for tracing 
+5. Created a observability class - [agent_observability.py](/mas_autogen/app/utils/agent_observability.py). In this class, I have created two methods, one for tracing the API endpoints and other for tracing 
 agent functions.
 
-5. Add decorator on the api endpoint in [agent_service.py](/mas_autogen/app/services/agent_service.py)
+6. Add decorator on the api endpoint in [agent_service.py](/mas_autogen/app/services/agent_service.py)
     ```
     @router.post("/chat")
     @agent_observability.metric_decorator(endpoint="/chat")
@@ -125,7 +129,7 @@ agent functions.
     ...
     ```
 
-6. Add decorator to the agent function in weather_functions.py. 
+7. Add decorator to the agent function in weather_functions.py. 
     ```
     @agent_observability_mas.trace_agent_function(function_name="get_weather_data")
     def get_weather_data(zip_code: str) -> dict:
@@ -136,11 +140,11 @@ agent functions.
     The decorator implementation is in the [agent_observability.py](/mas_autogen/app/utils/agent_observability.py) 
     The observability utility methods can be applied as decorators on the application code.
 
-7. Observe the logs carefully:
+8. Observe the logs carefully:
     - You should see the custom attribute - **response_time_ms** captured in the **resource_metrics**
     - You should also see logs of spans captured in the **resource_spans**
 
-8. In this tutorial I am relying on docker image. 
+9. In this tutorial I am relying on docker image. 
     - **Pre-requisite:** Install  docker   desktop on your machine.
     - Create docker network as we are going to install quite a observability tools which are integrating with each other.
     ```
@@ -173,9 +177,9 @@ agent functions.
     should see data as shown in below image
     ![alt text](assets/prometheus_query.png)
 
-8. Till now in above step we have stored the metrics in Prometheus.
+9. Till now in above step we have stored the metrics in Prometheus.
 
-9. Let us now store the traces in **Grafana Tempo**. It is a efficient trace storage.
+10. Let us now store the traces in **Grafana Tempo**. It is a efficient trace storage.
     - Create a file [tempo.yml](/observability/tempo.yml).
     - Open Docker desktop terminal and go to the folder
     ```
@@ -209,7 +213,7 @@ agent functions.
     ```
     The above code fragment will export the traces and push it in batches to Grafana Tempo
 
-10. Now, we have metrics in **Prometheus** and traces/spans in **Grafana Tempo**. Let us try to 
+11. Now, we have metrics in **Prometheus** and traces/spans in **Grafana Tempo**. Let us try to 
     visualize both in a common visualization tool - **Grafanna**
     - Download grafana
     ```
@@ -229,14 +233,14 @@ agent functions.
     http://host.docker.internal:9090
     ```
 
-11. Explore the **Grafana** dashboard. 
+12. Explore the **Grafana** dashboard. 
     - Grafana metric dashboard 
     ![alt text](/assets/Grafana_Prometheus.png)
 
     - Grafana trace dashboard
     ![alt text](/assets/Grafana_Tempo.png)
 
-12. Observability - Block Diagram
+13. Observability - Block Diagram
 
     ```mermaid
     graph TD;
