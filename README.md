@@ -107,16 +107,16 @@ cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
     ```
     poetry add opentelemetry-sdk
     poetry add opentelemetry-api
-    poetry add opentelemetry-exporter-prometheus
     ```
 3. The above libraries provide below features 
     - opentelemetry-api → API interface for traces and metrics.
     - opentelemetry-sdk → SDK for collecting and processing data.
     - opentelemetry-exporter-prometheus → Exporter to view metrics locally.   
 
-4. Created a observability class - [agent_observability.py](/mas_autogen/app/utils/agent_observability.py)
+4. Created a observability class - [agent_observability.py](/mas_autogen/app/utils/agent_observability.py). In this class, I have created two methods, one for tracing the API endpoints and other for tracing 
+agent functions.
 
-5. Add decorator on the api endpoint in agent_service.py
+5. Add decorator on the api endpoint in [agent_service.py](/mas_autogen/app/services/agent_service.py)
     ```
     @router.post("/chat")
     @agent_observability.metric_decorator(endpoint="/chat")
@@ -133,56 +133,67 @@ cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
     ...
     ...
     ```
-    The decorator implementation is in the agent_observability.py. 
-    The purpose of the decorator is to create spans for agent functions under the API trace.
+    The decorator implementation is in the [agent_observability.py](/mas_autogen/app/utils/agent_observability.py) 
+    The observability utility methods can be applied as decorators on the application code.
 
-7. Observe the logs carefully, you should see the custom attribute - **response_time_ms** captured in the **resource_metrics**
+7. Observe the logs carefully:
+    - You should see the custom attribute - **response_time_ms** captured in the **resource_metrics**
+    - You should also see logs of spans captured in the **resource_spans**
 
-8. Next is to push this metrics to Prometheus. 
+8. In this tutorial I am relying on docker image. 
+    - **Pre-requisite:** Install  docker   desktop on your machine.
+    - Create docker network as we are going to install quite a observability tools which are integrating with each other.
+    ```
+    docker network create docker-otel-network
+    ```
+
+8. Next is to push this metrics to Prometheus. Prometheus is a **Time-Series-Based** data store ideal for metric collection and storage.
     - Install prometheus library
         ```
         poetry add opentelemetry-exporter-prometheus
         ```
-    - In this tutorial I am relying on docker image. Install docker desktop on your machine.
-    - Create a file [prometheus.yml](/prometheus.yml)
+
+    - Create a file [prometheus.yml](/observability/prometheus.yml)
     - Open Docker desktop terminal and go to the folder
         ```
         cd /<your path>/PythonProjects/multi_agent_system_demo
         ```
     - Run the below docker command
         ```
-        docker run -d --name prometheus -p 9090:9090 \
+        docker run -d --name prometheus --network docker-otel-network -p 9090:9090 \
         -v $(pwd)/observability/prometheus.yml:/etc/prometheus/prometheus.yml \
         prom/prometheus
         ```
-        The above command will install docker with the configuration in prometheus.yml
+        The above command will install docker image with the configuration in prometheus.yml
+
     - Open Prometheus dashboard, it should be up and running [http://localhost:9090/query](http://localhost:9090/query)
     - Open Prometheus target page - [http://localhost:9090/targets](http://localhost:9090/targets) and you should see the job as shown in the below diagram
-    ![alt text](mas_autogen/assets/prometheus_targets.png)
+    ![alt text](assets/prometheus_targets.png)
     - Execute a request and then go to [http://localhost:9090/query](http://localhost:9090/query). Query **http_request_count_requests_total** and you 
     should see data as shown in below image
-    ![alt text](mas_autogen/assets/prometheus_query.png)
+    ![alt text](assets/prometheus_query.png)
 
 8. Till now in above step we have stored the metrics in Prometheus.
 
-9. Let us now store the traces in **Grafana Tempo**.
-    - Create a file [tempo.yml](tempo.yml).
+9. Let us now store the traces in **Grafana Tempo**. It is a efficient trace storage.
+    - Create a file [tempo.yml](/observability/tempo.yml).
     - Open Docker desktop terminal and go to the folder
     ```
     cd /<your path>/PythonProjects/multi_agent_system_demo
     ```
     - Run the below docker command
     ```
-    docker run -d --name tempo --network tempo-network -p 5317:4317 -p 5318:4318 \
+    docker run -d --name tempo --network docker-otel-network -p 5317:4317 -p 5318:4318 \
     -v $(pwd)/observability/tempo.yml:/etc/tempo/tempo.yml \
     grafana/tempo:latest --config.file=/etc/tempo/tempo.yml
     ```
     Port 4317: OTLP gRPC endpoint - Default OpenTelemetry exporters(OTLPSpanExporter) use gRPC
     Port 4318: OTLP HTTP endpoint - Some tracing agents might not support gRPC and might use HTTP.
-    - Create file - [otel-collector-config.yml](otel-collector-config.yml)
+
+    - Create file - [otel-collector-config.yml](/observability/otel-collector-config.yml)
     - Install OpenTelemetry Collector image
     ```
-    docker run -d --name otel-collector --network tempo-network -p 4327:4317 -p 4328:4318 \
+    docker run -d --name otel-collector --network docker-otel-network -p 4327:4317 -p 4328:4318 \
     -v $(pwd)/observability/otel-collector-config.yml:/etc/otel-collector-config.yml \
     otel/opentelemetry-collector-contrib --config /etc/otel-collector-config.yml
     ```
@@ -196,13 +207,17 @@ cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
         )  # TBD: Remove insecure=True for production. 
         self.tracer_provider.add_span_processor(BatchSpanProcessor(otlp_exporter))
     ```
-    - download grafana
+    The above code fragment will export the traces and push it in batches to Grafana Tempo
+
+10. Now, we have metrics in **Prometheus** and traces/spans in **Grafana Tempo**. Let us try to 
+    visualize both in a common visualization tool - **Grafanna**
+    - Download grafana
     ```
     docker pull grafana/grafana:latest          
     ```
-    - run grafana
+    - Run grafana
     ```
-    docker run -d --name grafana --network tempo-network -p 3000:3000 grafana/grafana
+    docker run -d --name grafana --network docker-otel-network -p 3000:3000 grafana/grafana
     ```
     - Open Grafana dashboard and set your password
     - Add datasource tempo with url
@@ -213,17 +228,24 @@ cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
     ```
     http://host.docker.internal:9090
     ```
-    - Explore the **Grafana** dashboard
-    - Block Diagram
+
+11. Explore the **Grafana** dashboard. 
+    - Grafana metric dashboard 
+    ![alt text](/assets/Grafana_Prometheus.png)
+
+    - Grafana trace dashboard
+    ![alt text](/assets/Grafana_Tempo.png)
+
+12. Observability - Block Diagram
 
     ```mermaid
     graph TD;
     A[Python App] -->|Generates Logs & Metrics| B[OpenTelemetry SDK];
-    B -->|Sends Metrics| C[Prometheus];
+    B -->|Sends Metrics| C[Prometheus: Metric Store];
     B -->|Sends Traces via OTLP| D[OpenTelemetry Collector];
-    D -->|Forwards Traces| E[Tempo];
-    C -->|Stores Metrics| F[Grafana Dashboard];
-    E -->|Stores Traces| F[Grafana Dashboard];
+    D -->|Forwards Traces| E[Tempo: Trace Store];
+    C <--> |Queries Metrics| F[Grafana Dashboard];
+    E <--> |Queries Traces| F[Grafana Dashboard];
     
     subgraph Observability Stack
         C
@@ -232,12 +254,11 @@ cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
     end
     ```
 
-
-
-
 ## References
 1. https://microsoft.github.io/autogen/0.2/docs/tutorial/introduction
 2. https://microsoft.github.io/autogen/0.2/blog/2024/01/26/Custom-Models
 3. https://github.com/microsoft/autogen/issues/2929
+4. https://grafana.com/blog/2021/05/04/get-started-with-distributed-tracing-and-grafana-tempo-using-foobar-a-demo-written-in-python/
+
 
 
