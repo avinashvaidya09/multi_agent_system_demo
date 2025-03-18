@@ -24,3 +24,5 @@ metrics_generator:
   registry:
     external_labels:
       source: tempo
+
+query_frontend: {}

@@ -173,8 +173,8 @@ cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
     ```
     - Run the below docker command
     ```
-    docker run -d --name tempo --network tempo-network -p 5317:4317 -p 5318:4318 \         
-    -v $(pwd)/tempo.yml:/etc/tempo/tempo.yml \                          
+    docker run -d --name tempo --network tempo-network -p 5317:4317 -p 5318:4318 \
+    -v $(pwd)/tempo.yml:/etc/tempo/tempo.yml \
     grafana/tempo:latest --config.file=/etc/tempo/tempo.yml
     ```
     Port 4317: OTLP gRPC endpoint - Default OpenTelemetry exporters(OTLPSpanExporter) use gRPC
@@ -196,7 +196,43 @@ cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
         )  # TBD: Remove insecure=True for production. 
         self.tracer_provider.add_span_processor(BatchSpanProcessor(otlp_exporter))
     ```
-    - 
+    - download grafana
+    ```
+    docker pull grafana/grafana:latest          
+    ```
+    - run grafana
+    ```
+    docker run -d --name grafana --network tempo-network -p 3000:3000 grafana/grafana
+    ```
+    - Open Grafana dashboard and set your password
+    - Add datasource tempo with url
+    ```
+    http://tempo:3200
+    ```
+    - Add datasource for prometheus
+    ```
+    http://host.docker.internal:9090
+    ```
+    - Explore the **Grafana** dashboard
+    - Block Diagram
+
+    ```mermaid
+    graph TD;
+    A[Python App] -->|Generates Logs & Metrics| B[OpenTelemetry SDK];
+    B -->|Sends Metrics| C[Prometheus];
+    B -->|Sends Traces via OTLP| D[OpenTelemetry Collector];
+    D -->|Forwards Traces| E[Tempo];
+    C -->|Stores Metrics| F[Grafana Dashboard];
+    E -->|Stores Traces| F[Grafana Dashboard];
+    
+    subgraph Observability Stack
+        C
+        E
+        F
+    end
+    ```
+
+
 
 
 ## References
