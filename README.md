@@ -152,7 +152,7 @@ cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
     - Run the below docker command
         ```
         docker run -d --name prometheus -p 9090:9090 \
-        -v $(pwd)/prometheus.yml:/etc/prometheus/prometheus.yml \
+        -v $(pwd)/observability/prometheus.yml:/etc/prometheus/prometheus.yml \
         prom/prometheus
         ```
         The above command will install docker with the configuration in prometheus.yml
@@ -174,7 +174,7 @@ cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
     - Run the below docker command
     ```
     docker run -d --name tempo --network tempo-network -p 5317:4317 -p 5318:4318 \
-    -v $(pwd)/tempo.yml:/etc/tempo/tempo.yml \
+    -v $(pwd)/observability/tempo.yml:/etc/tempo/tempo.yml \
     grafana/tempo:latest --config.file=/etc/tempo/tempo.yml
     ```
     Port 4317: OTLP gRPC endpoint - Default OpenTelemetry exporters(OTLPSpanExporter) use gRPC
@@ -183,7 +183,7 @@ cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
     - Install OpenTelemetry Collector image
     ```
     docker run -d --name otel-collector --network tempo-network -p 4327:4317 -p 4328:4318 \
-    -v $(pwd)/otel-collector-config.yml:/etc/otel-collector-config.yml \
+    -v $(pwd)/observability/otel-collector-config.yml:/etc/otel-collector-config.yml \
     otel/opentelemetry-collector-contrib --config /etc/otel-collector-config.yml
     ```
     Collector now listens on 4327 and forwards it to 4317
