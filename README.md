@@ -104,8 +104,7 @@ cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
 ## Agent Evaluation
 1. Building agents is one thing, but evaluating their performance is also very critical for successful implementation of Agentic AI solutions. In this section, I will walk you through the observability stack, which can be integrated with your application to visualize performance metrics for the agents and their functions.
 
-2. Usecase: To make this interesting, I have captured the response times
-of the **/chat** endpoint and agent function **/get_weather_data**. At the end of the tutorial, you should be able to visualize your agent performance. Let's start.
+2. **Usecase:** To make this interesting, I have captured the response times of the **/chat** endpoint and agent function **/get_weather_data**. At the end of the tutorial, you should be able to visualize your agent performance. Let's start.
 
 3. Import below libraries
     ```
@@ -233,7 +232,8 @@ agent functions.
     http://host.docker.internal:9090
     ```
 
-12. Explore the **Grafana** dashboard. 
+12. Explore the **Grafana** [dashboard](http://localhost:3000)
+
     - Grafana metric dashboard 
     ![alt text](/assets/Grafana_Prometheus.png)
 
