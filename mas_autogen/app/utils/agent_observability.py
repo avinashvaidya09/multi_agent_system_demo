@@ -48,6 +48,7 @@ class AgentObservability:
             self.meter = None
             self.request_counter = None
             self.response_time_histogram = None
+            self.request_size_histogram = None
 
     def init_observability(self, service_name="default_app"):
         """Initializes observability attributes
@@ -97,6 +98,12 @@ class AgentObservability:
             unit="requests",
         )
 
+        self.request_size_histogram = self.meter.create_histogram(
+            name="request_size_bytes",
+            description="Tracks the size of HTTP request payloads",
+            unit="bytes",
+        )
+
         # Define a histogram metric for response time (latency)
         self.response_time_histogram = self.meter.create_histogram(
             name="http_response_time",
@@ -104,7 +111,7 @@ class AgentObservability:
             unit="ms",
         )
 
-    def track_request(self, endpoint: str, response_time: str):
+    def track_request(self, endpoint: str, response_time: str, request_size_in_bytes: int):
         """Tracks the requests.
 
         Arguments:
@@ -112,6 +119,9 @@ class AgentObservability:
         """
         self.request_counter.add(1, {"endpoint": endpoint})
         self.response_time_histogram.record(response_time, {"endpoint": endpoint})
+        self.request_size_histogram.record(
+            request_size_in_bytes, {"request_size_in_bytes": request_size_in_bytes}
+        )
 
     def metric_decorator(self, endpoint: str):
         """Decorator to capture metrics.
@@ -126,14 +136,27 @@ class AgentObservability:
                 @wraps(func)
                 async def async_wrapper(*args, **kwargs):
                     start_time = time.time()
+
+                    request_payload = kwargs.get("request")
+                    agent_name = getattr(request_payload, "agent_name", "NOT PROVIDED")
+
+                    request_json_dump = request_payload.model_dump_json()
+                    request_size_in_bytes = len(request_json_dump.encode("utf-8"))
+
                     with self.tracer.start_as_current_span(
                         endpoint, kind=trace.SpanKind.SERVER
                     ) as span:
                         span.set_attribute("api_endpoint", endpoint)
+                        span.set_attribute("request_size_in_bytes", request_size_in_bytes)
+                        span.set_attribute("agent_name", agent_name)
                         response = await func(*args, **kwargs)
                         end_time = time.time()
                         response_time = (end_time - start_time) * 1000
-                        self.track_request(endpoint, response_time=response_time)
+                        self.track_request(
+                            endpoint,
+                            response_time=response_time,
+                            request_size_in_bytes=request_size_in_bytes,
+                        )
                         span.set_attribute("response_time_ms", response_time)
                         return response
 

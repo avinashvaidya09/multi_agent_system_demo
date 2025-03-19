@@ -244,10 +244,10 @@ agent functions.
 
     ```mermaid
     graph TD;
-    A[Python App] -->|Generates Logs & Metrics| B[OpenTelemetry SDK];
+    A[Agent: Python App] -->|Generates Logs & Metrics| B[OpenTelemetry SDK];
     B -->|Sends Metrics| C[Prometheus: Metric Store];
     B -->|Sends Traces via OTLP| D[OpenTelemetry Collector];
-    D -->|Forwards Traces| E[Tempo: Trace Store];
+    D -->|Forwards Traces| E[Grafana Tempo: Trace Store];
     C <--> |Queries Metrics| F[Grafana Dashboard];
     E <--> |Queries Traces| F[Grafana Dashboard];
     
