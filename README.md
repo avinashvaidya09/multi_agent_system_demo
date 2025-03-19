@@ -16,6 +16,8 @@ As part of this project you will also learn
 2. Leveraging Python OOP and structural programming paradigms.
 3. Why use FAST API?
 
+Note: Persisting chat history is not implemented as part of this project.
+
 ## Project Structure
 ```
 multi_agent_system_demo/
