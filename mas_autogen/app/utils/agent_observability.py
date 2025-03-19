@@ -166,14 +166,26 @@ class AgentObservability:
                 @wraps(func)
                 def sync_wrapper(*args, **kwargs):
                     start_time = time.time()
+                    request_payload = kwargs.get("request")
+                    agent_name = getattr(request_payload, "agent_name", "NOT PROVIDED")
+
+                    request_json_dump = request_payload.model_dump_json()
+                    request_size_in_bytes = len(request_json_dump.encode("utf-8"))
+
                     with self.tracer.start_as_current_span(
                         endpoint, kind=trace.SpanKind.SERVER
                     ) as span:
                         span.set_attribute("api_endpoint", endpoint)
+                        span.set_attribute("request_size_in_bytes", request_size_in_bytes)
+                        span.set_attribute("agent_name", agent_name)
                         response = func(*args, **kwargs)
                         end_time = time.time()
                         response_time = (end_time - start_time) * 1000
-                        self.track_request(endpoint, response_time=response_time)
+                        self.track_request(
+                            endpoint,
+                            response_time=response_time,
+                            request_size_in_bytes=request_size_in_bytes,
+                        )
                         span.set_attribute("response_time_ms", response_time)
                         return response
 
