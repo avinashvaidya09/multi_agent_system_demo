@@ -1,0 +1,23 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: "0.0.0.0:4317"  # Listen on GRPC
+      http:
+        endpoint: "0.0.0.0:4318"  # Listen on HTTP
+
+exporters:
+  otlp:
+    endpoint: "http://tempo:5317"  # Send traces to Tempo
+    tls:
+      insecure: true
+
+  debug:
+    verbosity: detailed  # Enable logs for debugging
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: []
+      exporters: [otlp, debug]

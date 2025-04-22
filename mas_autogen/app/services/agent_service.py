@@ -1,32 +1,16 @@
 """This module acts as a facade layer for the agents.
 """
 
-from cachetools import TTLCache
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from mas_autogen.app.agents.finance_group_chat_agent import FinanceGroupChatAgent
 from mas_autogen.app.agents.weather_agent import WeatherAgent
+from mas_autogen.app.utils.agent_observability import AgentObservability
 
 router = APIRouter()
 
-
-# cachetools for caching requests
-session_cache = TTLCache(maxsize=100, ttl=3600)
-
-
-def store_char_history(session_id: str, message: str):
-    """TBD: Stores session chat history.
-
-    Arguments:
-        session_id -- Session id of the user.
-        message -- user message.
-    """
-    if session_id in session_cache:
-        session_cache[session_id].append(message)
-    else:
-        session_cache[session_id] = [message]
-
+agent_observability_mas = AgentObservability(service_name="mas_app")
 
 class ChatRequest(BaseModel):
     """Chat Request Base Model
@@ -41,6 +25,7 @@ class ChatRequest(BaseModel):
 
 
 @router.post("/chat")
+@agent_observability_mas.metric_decorator(endpoint="/chat")
 async def chat(request: ChatRequest):
     """API endpoint to interact with AI agents dynamically.
 

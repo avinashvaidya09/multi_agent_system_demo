@@ -1,0 +1,28 @@
+server:
+  http_listen_port: 3200
+
+distributor:
+  receivers:
+    otlp:
+      protocols:
+        grpc:
+          endpoint: "0.0.0.0:5317"  # Updated GRPC port
+        http:
+          endpoint: "0.0.0.0:5318"  # Updated HTTP port
+
+storage:
+  trace:
+    backend: local
+    local:
+      path: /tmp/tempo
+
+compactor:
+  compaction:
+    block_retention: 24h
+
+metrics_generator:
+  registry:
+    external_labels:
+      source: tempo
+
+query_frontend: {}
