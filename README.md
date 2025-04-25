@@ -120,7 +120,15 @@ cf deploy mta_archives/multi_agent_system_demo_1.0.0.mtar
 - **Rest Client** is configured for API testing.
 
 ## Agent Evaluation
-1. Building agents is one thing, but evaluating their performance is also very critical for successful implementation of Agentic AI solutions. In this section, I will walk you through the observability stack, which can be integrated with your application to visualize performance metrics for the agents and their functions.
+Building agents is one thing, but evaluating their performance is also very critical for successful implementation of Agentic AI solutions. 
+In this section, I will walk you through the observability stack, which can be integrated with your application to visualize performance metrics for the agents and their functions.
+
+We will be using open source tools for visualization and opentelemetry SDK for metric data collection. I have categorized it in below points.
+
+1. Metrics and traces collection using opentelemetry SDK.
+2. Metrics storage in Prometheus.
+3. Trace export to OpenTelemetry collector, eventually stored in Grafana Tempo datastore.
+4. Metrics and traces visualization using Grafana dashboard.
 
 2. **Usecase:** To make this interesting, I have captured the response times of the **/chat** endpoint and agent function **/get_weather_data**. At the end of the tutorial, you should be able to visualize your agent performance. Let's start.
 
@@ -280,7 +288,9 @@ agent functions.
 1. https://microsoft.github.io/autogen/0.2/docs/tutorial/introduction
 2. https://microsoft.github.io/autogen/0.2/blog/2024/01/26/Custom-Models
 3. https://github.com/microsoft/autogen/issues/2929
-4. https://grafana.com/blog/2021/05/04/get-started-with-distributed-tracing-and-grafana-tempo-using-foobar-a-demo-written-in-python/
+4. https://opentelemetry.io/docs/languages/python/ 
+5. https://grafana.com/blog/2021/05/04/get-started-with-distributed-tracing-and-grafana-tempo-using-foobar-a-demo-written-in-python/ 
+6. https://prometheus.io/
 
 
 

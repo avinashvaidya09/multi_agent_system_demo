@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
     "agent_name": "WEATHER",
-    "message": "What is the weather today at 30041",
+    "message": "I am feeling a little bit cold today. What is the weather at 30041",
     "session_id": "123456"
 }
 
@@ -15,7 +15,7 @@ Content-Type: application/json
 
 {
     "agent_name": "WEATHER",
-    "message": "What is the weather today at 30041",
+    "message": "What is the weather today in my city. The city in which I live, the zip code I think is 30041",
     "session_id": "123456"
 }
 

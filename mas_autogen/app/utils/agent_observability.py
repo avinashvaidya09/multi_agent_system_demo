@@ -47,7 +47,6 @@ class AgentObservability:
             self.meter_provider = None
             self.meter = None
             self.request_counter = None
-            self.response_time_histogram = None
             self.request_size_histogram = None
 
     def init_observability(self, service_name="default_app"):
@@ -104,26 +103,18 @@ class AgentObservability:
             unit="bytes",
         )
 
-        # Define a histogram metric for response time (latency)
-        self.response_time_histogram = self.meter.create_histogram(
-            name="http_response_time",
-            description="Records the response time of HTTP requests",
-            unit="ms",
-        )
-
-    def track_request(self, endpoint: str, response_time: str, request_size_in_bytes: int):
+    def track_request(self, endpoint: str, request_size_in_bytes: int):
         """Tracks the requests.
 
         Arguments:
             endpoint -- API endpoint name.
         """
         self.request_counter.add(1, {"endpoint": endpoint})
-        self.response_time_histogram.record(response_time, {"endpoint": endpoint})
         self.request_size_histogram.record(
             request_size_in_bytes, {"request_size_in_bytes": request_size_in_bytes}
         )
 
-    def metric_decorator(self, endpoint: str):
+    def metric_collector(self, endpoint: str):
         """Decorator to capture metrics.
 
         Arguments:
@@ -154,7 +145,6 @@ class AgentObservability:
                         response_time = (end_time - start_time) * 1000
                         self.track_request(
                             endpoint,
-                            response_time=response_time,
                             request_size_in_bytes=request_size_in_bytes,
                         )
                         span.set_attribute("response_time_ms", response_time)
@@ -183,7 +173,6 @@ class AgentObservability:
                         response_time = (end_time - start_time) * 1000
                         self.track_request(
                             endpoint,
-                            response_time=response_time,
                             request_size_in_bytes=request_size_in_bytes,
                         )
                         span.set_attribute("response_time_ms", response_time)
