@@ -25,7 +25,7 @@ class ChatRequest(BaseModel):
 
 
 @router.post("/chat")
-@agent_observability_mas.metric_decorator(endpoint="/chat")
+@agent_observability_mas.metric_collector(endpoint="/chat")
 async def chat(request: ChatRequest):
     """API endpoint to interact with AI agents dynamically.
 
