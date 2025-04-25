@@ -148,7 +148,7 @@ agent functions.
 6. Add decorator on the api endpoint in [agent_service.py](/mas_autogen/app/services/agent_service.py)
     ```
     @router.post("/chat")
-    @agent_observability.metric_decorator(endpoint="/chat")
+    @agent_observability.metric_collector(endpoint="/chat")
     async def chat(request: ChatRequest):
     ...
     ...
